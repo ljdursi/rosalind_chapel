@@ -1,4 +1,4 @@
-module RNA {
+module REVC {
   const defaultfilename="none";
   config const infile=defaultfilename;
 
@@ -20,14 +20,20 @@ module RNA {
     return text;
   }
 
-  proc transcribe(line: string) {
-    return line.replace("T", "U");
+  proc reversecomplement(line: string) : string {
+    var rc:string = "";
+    const complements: [{'A', 'C', 'G', 'T'}] string = ['T', 'G', 'C', 'A'];
+
+    for i in 1..line.length by -1 do
+      rc += complements[line[i]];
+
+    return rc;
   }
 
   proc main() {
     var dna = string_from_file(infile, defaultfilename);
-    var rna = transcribe(dna);
+    var rc = reversecomplement(dna);
 
-    writeln(rna);
+    writeln(rc);
   }
 }
