@@ -19,9 +19,9 @@ module FIB {
 
   proc generalized_fib(ngen:int, off_per_gen:int): int {
     var last = 0, current = 1;
-    for i in 1..ngen-1 {
-        (last, current) = (current, current + off_per_gen*last );
-    }
+    for i in 1..ngen-1 do
+      (last, current) = (current, current + off_per_gen*last );
+
     return current;
   }
 
