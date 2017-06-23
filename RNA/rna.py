@@ -3,7 +3,6 @@
 from __future__ import print_function
 import argparse
 import sys
-from collections import defaultdict
 
 def transcribe(line):
     result = line.replace('T', 'U')

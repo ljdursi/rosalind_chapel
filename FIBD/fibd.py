@@ -3,7 +3,6 @@
 from __future__ import print_function
 import argparse
 import sys
-from collections import defaultdict
 
 def mortal_fib(ngen, lifespan):
     pop_structure = [0] * lifespan

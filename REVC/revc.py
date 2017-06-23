@@ -3,7 +3,6 @@
 from __future__ import print_function
 import argparse
 import sys
-from collections import defaultdict
 
 def reversecomplement(line):
     complements = {'A':'T', 'C':'G', 'G':'C', 'T':'A'}
