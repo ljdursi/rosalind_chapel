@@ -4,15 +4,12 @@ module GC {
 
   // use stdin if filename == defaultfilename
   proc input_channel(filename: string, defaultfilename: string) {
-    var text: string = "";
-    var line: string = "";
-
     var channel = stdin;
+
     if infile != defaultfilename {
       var file = open(infile, iomode.r);
       channel = file.reader();
     }
-
     return channel;
   }
 
