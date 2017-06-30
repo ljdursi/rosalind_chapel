@@ -1,4 +1,4 @@
-module RNA {
+module PROT {
   const defaultfilename="none";
   config const infile=defaultfilename;
   config const codonfile="codons.txt";
