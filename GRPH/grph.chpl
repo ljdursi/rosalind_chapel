@@ -1,4 +1,4 @@
-module GC {
+module GRPH {
   const defaultfilename="none";
   config const infile=defaultfilename;
   config const overlap = 3;

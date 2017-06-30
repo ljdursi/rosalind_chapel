@@ -1,4 +1,4 @@
-module LIA {
+module IEV {
   use LinearAlgebra;
   const defaultfilename="none";
   config const infile=defaultfilename;
