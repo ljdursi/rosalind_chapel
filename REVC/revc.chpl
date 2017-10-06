@@ -22,7 +22,7 @@ module REVC {
 
   proc reversecomplement(line: string) : string {
     var rc:string = "";
-    const complements: [{'A', 'C', 'G', 'T'}] string = ['T', 'G', 'C', 'A'];
+    const complements = ['A' => 'T', 'C' => 'G', 'G' => 'C', 'T' => 'A'];
 
     for i in 1..line.length by -1 do
       rc += complements[line[i]];
