@@ -107,14 +107,13 @@ module ORF {
 
   proc allproteins(dnaseq, codons, start, stop) : domain(string) {
     var rnaseq = transcribe(dnaseq);
-    const n = rnaseq.len;
     var proteins: domain(string);
     for i in 1..3 do
-        proteins = proteins + translate(rnaseq[i..n], codons, start, stop);
+        proteins = proteins + translate(rnaseq(i..), codons, start, stop);
 
     rnaseq = transcribe(reversecomplement(dnaseq));
     for i in 1..3 do
-        proteins = proteins + translate(rnaseq[i..n], codons, start, stop);
+        proteins = proteins + translate(rnaseq(i..), codons, start, stop);
 
     return proteins;
   }
