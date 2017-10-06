@@ -94,7 +94,7 @@ module ORF {
     }
     
     var proteins : domain(string);
-    var laststop = 1;
+    var laststop = 0;
     for stop in stoplocs {
         for start in startlocs {
             if start > laststop && start <= stop then

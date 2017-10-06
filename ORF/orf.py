@@ -43,7 +43,7 @@ def translate(rnaseq, codons, start, stop):
 
     # return proteins in ORFs in this sequence
     proteins = []
-    laststop = 0
+    laststop = -1
     for stop in stops:
         inframe_starts = [s for s in starts if s > laststop and s < stop]
         for start in inframe_starts:
