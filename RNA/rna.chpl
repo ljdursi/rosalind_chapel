@@ -4,18 +4,20 @@ module RNA {
 
   // read file into a single string 
   // use stdin if filename == defaultfilename
-  proc string_from_file(filename: string, defaultfilename: string) : string {
+  proc string_from_file(filename: string, defaultfilename: string) throws {
     var text: string = "";
-    var line: string = "";
 
-    var channel = stdin;
-    if infile != defaultfilename {
-      var file = open(infile, iomode.r);
-      channel = file.reader();
+    try! {
+      var line: string = "";
+      var channel = stdin;
+      if infile != defaultfilename {
+        var file = open(infile, iomode.r);
+        channel = file.reader();
+      }
+
+      while (channel.read(line)) do 
+        text = text + line;
     }
-
-    while (channel.read(line)) do 
-      text = text + line;
 
     return text;
   }
@@ -25,9 +27,11 @@ module RNA {
   }
 
   proc main() {
-    var dna = string_from_file(infile, defaultfilename);
-    var rna = transcribe(dna);
+    try! {
+      var dna = string_from_file(infile, defaultfilename);
+      var rna = transcribe(dna);
 
-    writeln(rna);
+      writeln(rna);
+    }
   }
 }

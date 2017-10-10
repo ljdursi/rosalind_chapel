@@ -3,16 +3,17 @@ module SIGN {
   config const infile=defaultfilename;
 
   // use stdin if filename == defaultfilename
-  proc param_from_file(filename: string, defaultfilename: string) {
+  proc param_from_file(filename: string, defaultfilename: string) throws {
     var n: int;
 
-    var channel = stdin;
-    if infile != defaultfilename {
-      var file = open(infile, iomode.r);
-      channel = file.reader();
+    try! {
+      var channel = stdin;
+      if infile != defaultfilename {
+        var file = open(infile, iomode.r);
+        channel = file.reader();
+      }
+      var success = channel.read(n);
     }
-
-    var success = channel.read(n);
     return n;
   }
 
@@ -57,16 +58,18 @@ module SIGN {
   }
 
   proc main() {
-    const n = param_from_file(infile, defaultfilename);
-    const nsigns = 2**n;
-    writeln(factorial(n) * nsigns);
-
-    var input : [1..n] int = 1..n;
-    for perm in array_permutations(n, input) {
-      for signvec in signvecs(n) {
-        for (item, sign) in zip(perm, signvec) do
-          write(item*sign, " ");
-        writeln();
+    try! {
+      const n = param_from_file(infile, defaultfilename);
+      const nsigns = 2**n;
+      writeln(factorial(n) * nsigns);
+  
+      var input : [1..n] int = 1..n;
+      for perm in array_permutations(n, input) {
+        for signvec in signvecs(n) {
+          for (item, sign) in zip(perm, signvec) do
+            write(item*sign, " ");
+          writeln();
+        }
       }
     }
   }
