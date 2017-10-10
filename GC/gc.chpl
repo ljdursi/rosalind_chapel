@@ -3,7 +3,7 @@ module GC {
   config const infile=defaultfilename;
 
   // use stdin if filename == defaultfilename
-  proc input_channel(filename: string, defaultfilename: string) {
+  proc input_channel(filename: string, defaultfilename: string) throws {
     var channel = stdin;
 
     if infile != defaultfilename {
@@ -13,12 +13,12 @@ module GC {
     return channel;
   }
 
-  iter fasta_iterator(inchannel) {
+  iter fasta_iterator(inchannel) throws {
     var sequence = "", seqlabel = "";
     var started = false;
     var line = "";
 
-    while (inchannel.read(line)) {
+    while (inchannel.readline(line)) {
       if (line[1] == '>') {
         if (started) then
           yield (seqlabel, sequence);
@@ -27,7 +27,7 @@ module GC {
         seqlabel = line(2..);
         sequence = "";
       } else {
-        sequence += line;
+        sequence += line.strip();
       }
     }
 
@@ -46,15 +46,17 @@ module GC {
   }
 
   proc main() {
-    var inchannel = input_channel(infile, defaultfilename);
-    var maxlabel = "none", maxgc = -1.0;
+    try! {
+      var inchannel = input_channel(infile, defaultfilename);
+      var maxlabel = "none", maxgc = -1.0;
 
-    for (seqlabel, sequence) in fasta_iterator(inchannel) {
-      var gc = sequence_gc(sequence);
-      if (gc > maxgc) then
-         (maxlabel, maxgc) = (seqlabel, gc);
+      for (seqlabel, sequence) in fasta_iterator(inchannel) {
+        var gc = sequence_gc(sequence);
+        if (gc > maxgc) then
+           (maxlabel, maxgc) = (seqlabel, gc);
+      }
+      writeln(maxlabel);
+      writeln(maxgc);
     }
-    writeln(maxlabel);
-    writeln(maxgc);
   }
 }

@@ -3,7 +3,7 @@ module FIB {
   config const infile=defaultfilename;
 
   // use stdin if filename == defaultfilename
-  proc params_from_file(filename: string, defaultfilename: string) {
+  proc params_from_file(filename: string, defaultfilename: string) throws {
     var n: int;
     var k: int;
 
@@ -27,9 +27,11 @@ module FIB {
 
   proc main() {
     var n:int, k:int;
-    (n, k) = params_from_file(infile, defaultfilename);
-    var result = generalized_fib(n, k);
+    try! {
+      (n, k) = params_from_file(infile, defaultfilename);
+      var result = generalized_fib(n, k);
 
-    writeln(result);
+      writeln(result);
+    }
   }
 }

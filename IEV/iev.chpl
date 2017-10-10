@@ -5,7 +5,7 @@ module IEV {
   config const off_per_couple = 2 : uint;
 
   // use stdin if filename == defaultfilename
-  proc params_from_file(filename: string, defaultfilename: string) {
+  proc params_from_file(filename: string, defaultfilename: string) throws {
     var counts: [1..6] uint;
 
     var channel = stdin;
@@ -41,19 +41,21 @@ module IEV {
   }
 
   proc main() {
-    var counts = params_from_file(infile, defaultfilename);
-    var AA = Vector([0.0, 0.0, 1.0]);
-    var Aa = Vector([0.0, 1.0, 0.0]);
-    var aa = Vector([1.0, 0.0, 0.0]);
+    try! {
+      var counts = params_from_file(infile, defaultfilename);
+      var AA = Vector([0.0, 0.0, 1.0]);
+      var Aa = Vector([0.0, 1.0, 0.0]);
+      var aa = Vector([1.0, 0.0, 0.0]);
 
-    var expectation = 0.0;
-    expectation += off_per_couple * counts[1] * frac_expected_dominant(AA, AA);
-    expectation += off_per_couple * counts[2] * frac_expected_dominant(AA, Aa);
-    expectation += off_per_couple * counts[3] * frac_expected_dominant(AA, aa);
-    expectation += off_per_couple * counts[4] * frac_expected_dominant(Aa, Aa);
-    expectation += off_per_couple * counts[5] * frac_expected_dominant(Aa, aa);
-    expectation += off_per_couple * counts[6] * frac_expected_dominant(aa, aa);
+      var expectation = 0.0;
+      expectation += off_per_couple * counts[1] * frac_expected_dominant(AA, AA);
+      expectation += off_per_couple * counts[2] * frac_expected_dominant(AA, Aa);
+      expectation += off_per_couple * counts[3] * frac_expected_dominant(AA, aa);
+      expectation += off_per_couple * counts[4] * frac_expected_dominant(Aa, Aa);
+      expectation += off_per_couple * counts[5] * frac_expected_dominant(Aa, aa);
+      expectation += off_per_couple * counts[6] * frac_expected_dominant(aa, aa);
 
-    writef("%dr\n", expectation);
+      writef("%dr\n", expectation);
+    }
   }
 }

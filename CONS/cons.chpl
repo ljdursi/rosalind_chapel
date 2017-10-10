@@ -1,4 +1,4 @@
-module GC {
+module CONS {
   const defaultfilename="none";
   config const infile=defaultfilename;
 
@@ -6,22 +6,24 @@ module GC {
   const idx_to_base = [0 => "A", 1 => "C", 2 => "G", 3 => "T"];
 
   // use stdin if filename == defaultfilename
-  proc input_channel(filename: string, defaultfilename: string) {
+  proc input_channel(filename: string, defaultfilename: string) throws {
     var channel = stdin;
 
     if infile != defaultfilename {
-      var file = open(infile, iomode.r);
-      channel = file.reader();
+      try! {
+        var file = open(infile, iomode.r);
+        channel = file.reader();
+      }
     }
     return channel;
   }
 
-  iter fasta_iterator(inchannel) {
+  iter fasta_iterator(inchannel) throws {
     var sequence = "", seqlabel = "";
     var started = false;
     var line = "";
 
-    while (inchannel.read(line)) {
+    while (inchannel.readline(line)) {
       if (line[1] == '>') {
         if (started) then
           yield (seqlabel, sequence);
@@ -30,7 +32,7 @@ module GC {
         seqlabel = line(2..);
         sequence = "";
       } else {
-        sequence += line;
+        sequence += line.strip();
       }
     }
 
@@ -60,17 +62,19 @@ module GC {
   }
 
   proc main() {
-    var inchannel = input_channel(infile, defaultfilename);
-    var maxlabel = "none", maxgc = -1.0;
+    try! {
+      var inchannel = input_channel(infile, defaultfilename);
+      var maxlabel = "none", maxgc = -1.0;
 
-    var sequences : [1..0] string;
-    for (seqlabel, sequence) in fasta_iterator(inchannel) {
-      sequences.push_back(sequence);
+      var sequences : [1..0] string;
+      for (seqlabel, sequence) in fasta_iterator(inchannel) {
+        sequences.push_back(sequence);
+      }
+      var counts = profile(sequences);
+      var consensus = consensus_from_profile(counts);
+      writeln(consensus);
+      for i in 0..3 do
+        writeln(idx_to_base[i], ": ", counts[i, 1..]);
     }
-    var counts = profile(sequences);
-    var consensus = consensus_from_profile(counts);
-    writeln(consensus);
-    for i in 0..3 do
-      writeln(idx_to_base[i], ": ", counts[i, 1..]);
   }
 }

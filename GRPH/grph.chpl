@@ -14,7 +14,7 @@ module GRPH {
   }
 
   // use stdin if filename == defaultfilename
-  proc input_channel(filename: string, defaultfilename: string) {
+  proc input_channel(filename: string, defaultfilename: string) throws {
     var channel = stdin;
 
     if infile != defaultfilename {
@@ -24,12 +24,12 @@ module GRPH {
     return channel;
   }
 
-  iter fasta_iterator(inchannel) {
+  iter fasta_iterator(inchannel) throws {
     var sequence = "", seqlabel = "";
     var started = false;
     var line = "";
 
-    while (inchannel.read(line)) {
+    while (inchannel.readline(line)) {
       if (line[1] == '>') {
         if (started) then
           yield (seqlabel, sequence);
@@ -38,7 +38,7 @@ module GRPH {
         seqlabel = line(2..);
         sequence = "";
       } else {
-        sequence += line;
+        sequence += line.strip();
       }
     }
 
@@ -47,26 +47,28 @@ module GRPH {
   }
 
   proc main() {
-    var inchannel = input_channel(infile, defaultfilename);
-    var allreads : domain(read);
+    try! {
+      var inchannel = input_channel(infile, defaultfilename);
+      var allreads : domain(read);
     
-    var kmers : domain(string);
-    var prefixes : [kmers] array_of_reads;
-
-    for (seqlabel, sequence) in fasta_iterator(inchannel) {
-      // populate the nodes
-      const curread = new read(sequence, seqlabel);
-      allreads.add(curread);
-      prefixes[sequence(1..overlap)].reads.push_back(curread);
-    }
+      var kmers : domain(string);
+      var prefixes : [kmers] array_of_reads;
+  
+      for (seqlabel, sequence) in fasta_iterator(inchannel) {
+        // populate the nodes
+        const curread = new read(sequence, seqlabel);
+        allreads.add(curread);
+        prefixes[sequence(1..overlap)].reads.push_back(curread);
+      }
      
-    for read in allreads {
-      const l = read.seq.len;
-      const suffix = read.seq(l-overlap+1..l);
-      if kmers.member(suffix) then
-        for neighbor in prefixes[suffix].reads do
-          if neighbor.readlabel != read.readlabel then
-            writeln(read.readlabel, " ", neighbor.readlabel);
+      for read in allreads {
+        const l = read.seq.len;
+        const suffix = read.seq(l-overlap+1..l);
+        if kmers.member(suffix) then
+          for neighbor in prefixes[suffix].reads do
+            if neighbor.readlabel != read.readlabel then
+              writeln(read.readlabel, " ", neighbor.readlabel);
+      }
     }
   }
 }

@@ -4,7 +4,7 @@ module DNA {
 
   // read file into a single string 
   // use stdin if filename == defaultfilename
-  proc string_from_file(filename: string, defaultfilename: string) : string {
+  proc string_from_file(filename: string, defaultfilename: string) throws {
     var text: string = "";
     var line: string = "";
 
@@ -30,9 +30,11 @@ module DNA {
   }
 
   proc main() {
-    var sequence = string_from_file(infile, defaultfilename);
-    var counts = count_chars(sequence);
+    try! {
+      var sequence = string_from_file(infile, defaultfilename);
+      var counts = count_chars(sequence);
 
-    writeln(counts['A'], " ", counts['C'], " ", counts['G'], " ", counts['T']);
+      writeln(counts['A'], " ", counts['C'], " ", counts['G'], " ", counts['T']);
+    }
   }
 }
