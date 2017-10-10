@@ -5,7 +5,7 @@ module LIA {
   config const nalleles = 2;
 
   // use stdin if filename == defaultfilename
-  proc params_from_file(filename: string, defaultfilename: string) {
+  proc params_from_file(filename: string, defaultfilename: string) throws {
     var k: uint;
     var n: uint;
 
@@ -59,19 +59,21 @@ module LIA {
 
   proc main() {
     var k:uint, n:uint;
-    (k, n) = params_from_file(infile, defaultfilename);
-    const tom = Vector([0.0, 1.0, 0.0]);
-    const others = Vector([0.0, 1.0, 0.0]);
-    
-    const probs = allele_count_probabilities(n, tom, others);
-    const prob_one_each = probs[1]**nalleles;
+    try! {
+      (k, n) = params_from_file(infile, defaultfilename);
+      const tom = Vector([0.0, 1.0, 0.0]);
+      const others = Vector([0.0, 1.0, 0.0]);
+      
+      const probs = allele_count_probabilities(n, tom, others);
+      const prob_one_each = probs[1]**nalleles;
+  
+      var cmf = 1.0;
+      for i in 0..n-1 {
+        var delta = binom_pmf(i, 2**k, prob_one_each);
+        cmf -= delta;
+      }
 
-    var cmf = 1.0;
-    for i in 0..n-1 {
-      var delta = binom_pmf(i, 2**k, prob_one_each);
-      cmf -= delta;
+      writeln(cmf);
     }
-
-    writeln(cmf);
   }
 }

@@ -2,11 +2,11 @@ import pytest
 import subprocess
 
 modules = ["CONS", "DNA", "FIB", "FIBD", "GC", "GRPH", "HAMM",
-           "IPRB", "LCSM", "LEXF", "LIA", "MPRT", "MRNA", "ORF", "PERM",
+           "IPRB", "LCSM", "LEXF", "MPRT", "MRNA", "ORF", "PERM",
            "PPER", "PROB", "PROT", "PRTM", "REVC", "REVP", "RNA", "SIGN",
            "SPLC", "SSEQ", "SUBS", "TRAN"]
 
-need_blas = ["IEV"]
+need_blas = ["IEV", "LIA"]
 
 
 def compile_idfn(module):

@@ -3,7 +3,7 @@ module DNA {
   config const infile=defaultfilename;
 
   // use stdin if filename == defaultfilename
-  proc params_from_file(filename: string, defaultfilename: string) {
+  proc params_from_file(filename: string, defaultfilename: string) throws {
     var alphabetstring: string = "";
     var k: uint;
 
@@ -34,12 +34,14 @@ module DNA {
   }
 
   proc main() {
-    var params = params_from_file(infile, defaultfilename);
-    var alphabet = params[1];
-    var k : uint = params[2];
-    var n : int = alphabet.size;
+    try! {
+      var params = params_from_file(infile, defaultfilename);
+      var alphabet = params[1];
+      var k : uint = params[2];
+      var n : int = alphabet.size;
 
-    for kmer in lex_strings_from_alphabet(k, n, alphabet) do
-        writeln(kmer);
+      for kmer in lex_strings_from_alphabet(k, n, alphabet) do
+          writeln(kmer);
+    }
   }
 }

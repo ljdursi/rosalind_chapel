@@ -3,23 +3,24 @@ module RNA {
   config const infile=defaultfilename;
   config const weightfile="weights.txt";
 
-  proc readtable() {
+  proc readtable() throws {
     var aminos : domain(string);
     var weights : [aminos] real;
 
-    var file = open(weightfile, iomode.r);
-    var channel = file.reader();
+    try! {
+      var file = open(weightfile, iomode.r);
+      var channel = file.reader();
 
-    var amino : string;
-    var weight : real;
-    while (channel.readln(amino, weight)) do
-      weights[amino] = weight;
-
+      var amino : string;
+      var weight : real;
+      while (channel.readln(amino, weight)) do
+        weights[amino] = weight;
+    }
     return weights;
   }
 
   // use stdin if filename == defaultfilename
-  proc string_from_file(filename: string, defaultfilename: string) : string {
+  proc string_from_file(filename: string, defaultfilename: string) throws {
     var text: string = "";
     var line: string = "";
 
@@ -44,10 +45,12 @@ module RNA {
   }
 
   proc main() {
-    var weights = readtable();
-    var protein = string_from_file(infile, defaultfilename);
-    var result = totalweight(protein, weights);
+    try! {
+      var weights = readtable();
+      var protein = string_from_file(infile, defaultfilename);
+      var result = totalweight(protein, weights);
      
-    writef("%dr\n", result);
+      writef("%dr\n", result);
+    }
   }
 }

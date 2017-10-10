@@ -3,7 +3,7 @@ module FIB {
   config const infile=defaultfilename;
 
   // use stdin if filename == defaultfilename
-  proc param_from_file(filename: string, defaultfilename: string) {
+  proc param_from_file(filename: string, defaultfilename: string) throws {
     var n: uint;
 
     var channel = stdin;
@@ -43,11 +43,13 @@ module FIB {
   }
 
   proc main() {
-    var n = param_from_file(infile, defaultfilename);
-    var input : [1..n] uint = 1..n;
-    writeln(factorial(n));
+    try! { 
+      var n = param_from_file(infile, defaultfilename);
+      var input : [1..n] uint = 1..n;
+      writeln(factorial(n));
 
-    for perm in array_permutations(n, input) do
-        writeln(perm);
+      for perm in array_permutations(n, input) do
+          writeln(perm);
+    }
   }
 }

@@ -3,7 +3,7 @@ module IPRB {
   config const infile=defaultfilename;
 
   // use stdin if filename == defaultfilename
-  proc params_from_file(filename: string, defaultfilename: string) {
+  proc params_from_file(filename: string, defaultfilename: string) throws {
     var k, m, n: uint;
 
     var channel = stdin;
@@ -26,10 +26,12 @@ module IPRB {
 
   proc main() {
     var k, m, n : uint;
-    (k, m, n) = params_from_file(infile, defaultfilename);
-    var tot = k + m + n;
-    var p = (1.0/tot)*(k + m/(tot-1.0)*(k + 0.75*(m-1.0) + 0.5*n) + n/(tot-1.0)*(k + 0.5*m));
+    try! {
+      (k, m, n) = params_from_file(infile, defaultfilename);
+      var tot = k + m + n;
+      var p = (1.0/tot)*(k + m/(tot-1.0)*(k + 0.75*(m-1.0) + 0.5*n) + n/(tot-1.0)*(k + 0.5*m));
 
-    writeln(p);
+      writeln(p);
+    }
   }
 }

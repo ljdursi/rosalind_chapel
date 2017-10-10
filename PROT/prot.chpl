@@ -3,28 +3,30 @@ module PROT {
   config const infile=defaultfilename;
   config const codonfile="codons.txt";
 
-  proc readtables() {
+  proc readtables() throws {
     var allcodons : domain(string);
     var codons : [allcodons] string;
     var stop : domain(string);
 
-    var file = open(codonfile, iomode.r);
-    var channel = file.reader();
+    try! {
+      var file = open(codonfile, iomode.r);
+      var channel = file.reader();
 
-    var rna : string;
-    var amino : string;
-    while (channel.readln(rna, amino)) {
-      if amino == "Stop" then
-        stop += rna;
-      else
-        codons[rna] = amino;
+      var rna : string;
+      var amino : string;
+      while (channel.readln(rna, amino)) {
+        if amino == "Stop" then
+          stop += rna;
+        else
+          codons[rna] = amino;
+      }
     }
 
     return (codons, stop);
   }
 
   // use stdin if filename == defaultfilename
-  proc string_from_file(filename: string, defaultfilename: string) : string {
+  proc string_from_file(filename: string, defaultfilename: string) throws {
     var text: string = "";
     var line: string = "";
 
@@ -54,13 +56,15 @@ module PROT {
   }
 
   proc main() {
-    var tables = readtables();
-    var codons = tables[1];
-    var stop = tables[2];
+    try! {
+      var tables = readtables();
+      var codons = tables[1];
+      var stop = tables[2];
 
-    var rna = string_from_file(infile, defaultfilename);
-    var result = transcribe(rna, codons, stop);
+      var rna = string_from_file(infile, defaultfilename);
+      var result = transcribe(rna, codons, stop);
      
-    writeln(result);
+      writeln(result);
+    }
   }
 }
