@@ -2,8 +2,9 @@ import pytest
 import subprocess
 import os.path
 
-modules = ["DNA", "RNA", "REVC", "FIB", "GC", "HAMM", "IPRB", "PROT", "SUBS",
-           "CONS"]
+modules = ["CONS", "FIBD", "HAMM", "LIA", "PROT", 
+           "DNA", "GC", "IEV", "LEXF", "MPRT", "PRTM", "RNA", "SUBS",
+           "FIB", "IPRB", "LGIS", "MRNA", "REVC", "SPLC"]
 
 
 def run_idfn(module):

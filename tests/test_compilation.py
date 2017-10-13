@@ -4,7 +4,7 @@ import subprocess
 modules = ["CONS", "DNA", "FIB", "FIBD", "GC", "GRPH", "HAMM",
            "IPRB", "LCSM", "LEXF", "MPRT", "MRNA", "ORF", "PERM",
            "PPER", "PROB", "PROT", "PRTM", "REVC", "REVP", "RNA", "SIGN",
-           "SPLC", "SSEQ", "SUBS", "TRAN"]
+           "SPLC", "SSEQ", "SUBS", "TRAN", "LGIS"]
 
 modules_need_blas = ["IEV", "LIA"]
 
@@ -34,8 +34,8 @@ def test_basic_compilation_blas(module):
     sourcecode = lowercase+'.chpl'
     executable = lowercase
 
-    BLASLIB = '/usr/local/opt/openblas/lib'
-    BLASINC = '/usr/local/opt/openblas/include'
+    BLASLIB = '/usr/local/Cellar/openblas/0.2.20/lib/'
+    BLASINC = '/usr/local/Cellar/openblas/0.2.20/include/'
     ret_val = subprocess.check_call(['chpl', '-o', executable, sourcecode,
                                      '-L'+BLASLIB, '-llapack', '-lblas',
                                      '-I'+BLASINC],
