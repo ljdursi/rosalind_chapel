@@ -11,6 +11,7 @@ before_script:
   - sudo apt-get update -qq
   - sudo apt-get install -qq gcc libopenblas-dev liblapack-dev wget
   - sudo pip install pytest
+  - sudo pip install scipy
   - ./build_install_chapel.sh
 
 script:
