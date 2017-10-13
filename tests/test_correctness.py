@@ -1,7 +1,8 @@
 import pytest
 import subprocess
 
-modules = ["DNA", "RNA", "REVC", "FIB", "GC"]
+modules = ["DNA", "RNA", "REVC", "FIB", "GC", "HAMM", "IPRB", "PROT", "SUBS",
+           "CONS"]
 
 
 def run_idfn(module):
@@ -30,7 +31,7 @@ def compare_lines(runoutput, goodoutput):
                 assert is_equal_abs(float(gooditem), float(outitem))
             else:
                 assert gooditem == outitem
-    
+
 
 @pytest.mark.parametrize("module", modules, ids=run_idfn)
 def test_python_run(module):
