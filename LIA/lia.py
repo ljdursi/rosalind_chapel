@@ -4,6 +4,7 @@ from __future__ import print_function
 import argparse
 import sys
 import numpy
+import scipy
 from scipy.stats import binom
 
 def allele_count_probabilities(ngen, first_parent, other_parents):
