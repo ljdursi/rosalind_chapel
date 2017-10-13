@@ -1,0 +1,19 @@
+language: python
+
+os:
+  - linux
+
+cache:
+  directories:
+    - $HOME/chapel-1.16.0
+
+before_script:
+  - sudo apt-get update -qq
+  - sudo apt-get install -qq gcc libopenblas-dev liblapack-dev wget
+  - sudo pip install pytest
+  - ./build_install_chapel.sh
+
+script:
+  - export CHAPEL_HOME=~/chapel-1.16.0
+  - source ${CHAPEL_HOME}/util/setchplenv.bash
+  - pytest tests

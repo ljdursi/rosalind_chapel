@@ -1,5 +1,6 @@
 import pytest
 import subprocess
+import os.path
 
 modules = ["DNA", "RNA", "REVC", "FIB", "GC", "HAMM", "IPRB", "PROT", "SUBS",
            "CONS"]
@@ -50,6 +51,8 @@ def test_python_run(module):
 def test_chapel_run(module):
     lowercase = module.lower()
     executable = './'+lowercase
+    # make sure was compiled
+    assert os.path.isfile(module+'/'+module.lower())
 
     output = subprocess.check_output([executable, '--infile', 'test.in'],
                                      cwd='./'+module)
