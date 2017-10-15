@@ -16,5 +16,6 @@ before_script:
 
 script:
   - export CHAPEL_HOME=~/chapel-1.16.0
+  - export CHPL_AUX_FILESYS=curl
   - source ${CHAPEL_HOME}/util/setchplenv.bash
   - pytest tests
