@@ -18,13 +18,13 @@ module FIB {
   }
 
   proc mortal_fib(ngen:int, lifespan:int): uint {
-    var pop_structure: [1..lifespan] uint;
-    pop_structure = 0;
+    var pop_structure: [1..lifespan] uint = 0;
     pop_structure[1] = 1;
 
     for i in 2..ngen {
       var offspring = + reduce pop_structure[2..];
-      pop_structure[2..] = pop_structure[1..lifespan-1];
+      var old = pop_structure[1..lifespan-1];
+      pop_structure[2..] = old;
       pop_structure[1] = offspring;
     }
 
