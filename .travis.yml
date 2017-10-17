@@ -7,7 +7,7 @@ cache:
   directories:
     - $HOME/chapel-1.16.0
 
-before_script:
+install:
   - sudo apt-get update -qq
   - sudo apt-get install -qq gcc libopenblas-dev liblapack-dev wget
   - sudo pip install pytest
