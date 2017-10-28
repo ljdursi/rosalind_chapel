@@ -48,4 +48,4 @@ def test_timings():
             if os.path.isfile(testinput):
                 chpltime = time_chapel(subdir)
                 pytime = time_python(subdir)
-                f.write(subdir + "\t" + str(chpltime) + "\t" + str(pytime))
+                f.write("\t".join([subdir, str(chpltime), str(pytime)])+"\n")
