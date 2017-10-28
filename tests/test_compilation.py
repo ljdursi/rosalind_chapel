@@ -23,8 +23,8 @@ def test_basic_compilation(module):
     sourcecode = lowercase+'.chpl'
     executable = lowercase
 
-    ret_val = subprocess.check_call(['chpl', '-o', executable, sourcecode],
-                                    cwd='./'+module)
+    ret_val = subprocess.check_call(['chpl', '--fast', '-o', executable,
+                                     sourcecode], cwd='./'+module)
     assert ret_val == 0
 
 
