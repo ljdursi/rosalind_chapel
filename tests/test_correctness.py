@@ -6,7 +6,7 @@ import pytest
 modules = ["CONS", "FIBD", "HAMM", "LIA", "PROT",
            "DNA", "GC", "IEV", "LEXF", "MPRT", "PRTM", "RNA", "SUBS",
            "FIB", "IPRB", "LGIS", "MRNA", "REVC", "SPLC", "PMCH", "TREE",
-           "LONG"]
+           "LONG", "SSET"]
 
 
 def run_idfn(module):

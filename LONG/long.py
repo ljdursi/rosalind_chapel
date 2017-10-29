@@ -46,7 +46,6 @@ def overlap_graph(sequences, mink):
                     overlaps[idx].append((seqno, k))
                     nins[seqno] += 1
 
-    print(nins)
     startpos = [idx for idx in range(nsequences) if nins[idx] == 0]
     return overlaps, startpos
 
