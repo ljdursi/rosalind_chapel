@@ -28,6 +28,7 @@ def fasta_iterator(infile):
 
 def overlap_graph(sequences, mink):
     suffixes = defaultdict(list)
+    nins = defaultdict(int)
     nsequences = len(sequences)
 
     for sequence, seqno in zip(sequences, range(nsequences)):
@@ -43,50 +44,23 @@ def overlap_graph(sequences, mink):
             for idx in locations:
                 if not idx == seqno:
                     overlaps[idx].append((seqno, k))
+                    nins[seqno] += 1
 
-    return overlaps
-
-
-def dfs_traversals(graph, start, curvisited):
-    visited = curvisited.copy()
-    visited.add(start)
-    neighbors = [(i, k) for i, k in graph[start] if i not in visited]
-    if len(neighbors) == 0:
-        return [[(start, None)]]
-    else:
-        traversals = []
-        for neighbor, overlap in neighbors:
-            subtraversals = dfs_traversals(graph, neighbor, visited)
-            traversals += [[(start, overlap)] + sub for sub in subtraversals]
-    return traversals
+    print(nins)
+    startpos = [idx for idx in range(nsequences) if nins[idx] == 0]
+    return overlaps, startpos
 
 
-def possible_chromosomes(graph, seqs):
-    nseqs = len(seqs)
-    nins = [0]*nseqs
-    for k, values in graph.items():
-        for idx, k in values:
-            nins[idx] += 1
+def reconstruct_chromosome(graph, startpos, seqs):
+    # we are assured there's a unique reconstruction
+    current = startpos[0]
+    chromosome = seqs[current]
 
-    possible_starts = [i for i, j in zip(range(nseqs), nins) if j == 0]
+    while not len(graph[current]) == 0:
+        current, overlap = graph[current][0]
+        chromosome += seqs[current][overlap:]
 
-    full_traversals = []
-    for start in possible_starts:
-        visited = set()
-        traversals = dfs_traversals(graph, start, visited)
-        for traversal in traversals:
-            if len(traversal) == nseqs:
-                full_traversals.append(traversal)
-
-    chromosomes = []
-    for traversal in full_traversals:
-        idxs = [i for i, j in traversal]
-        overlaps = [0] + [j for i, j in traversal[:-1]]
-
-        chromosome = "".join([seqs[idx][overlap:] for idx, overlap in zip(idxs, overlaps)])
-        chromosomes.append(chromosome)
-
-    return chromosomes
+    return chromosome
 
 
 if __name__ == "__main__":
@@ -102,8 +76,6 @@ if __name__ == "__main__":
         l = len(reads[0])
         k = (l+1)//2
 
-        g = overlap_graph(reads, k)
-        chroms = possible_chromosomes(g, reads)
-
-        minchrom = min(chroms, key=len)
-        print(minchrom)
+        g, starts = overlap_graph(reads, k)
+        chrom = reconstruct_chromosome(g, starts, reads)
+        print(chrom)
