@@ -16,6 +16,8 @@ def run_idfn(module):
 def is_float(s):
     try:
         float(s)
+        if s == "NAN":    # there has to be a better way
+            return False
         return True
     except ValueError:
         return False
