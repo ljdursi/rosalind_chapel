@@ -41,6 +41,7 @@ def composition(sequence, k):
     nkmers = 4**k
     lastplace = 4**(k-1)
     counts = numpy.zeros(nkmers, dtype=numpy.int)
+    counts[kmer_value] += 1
     for i in range(k, n):
         kmer_value -= lastplace*intseq[i-k]
         kmer_value = kmer_value*4 + intseq[i]
