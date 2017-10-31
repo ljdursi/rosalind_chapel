@@ -30,7 +30,7 @@ module LONG {
           yield (seqlabel, sequence);
 
         started = true;
-        seqlabel = line(2..);
+        seqlabel = line(2..).strip();
         sequence = "";
       } else {
         sequence += line.strip();

@@ -26,10 +26,10 @@ module PMCH {
           yield (seqlabel, sequence);
 
         started = true;
-        seqlabel = line(2..);
+        seqlabel = line(2..).strip();
         sequence = "";
       } else {
-        sequence += line;
+        sequence += line.strip();
       }
     }
 
