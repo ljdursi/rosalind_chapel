@@ -6,7 +6,8 @@ import pytest
 modules = ["CONS", "FIBD", "HAMM", "LIA", "PROT",
            "DNA", "GC", "IEV", "LEXF", "MPRT", "PRTM", "RNA", "SUBS",
            "FIB", "IPRB", "LGIS", "MRNA", "REVC", "SPLC", "PMCH", "TREE",
-           "LONG", "SSET", "LEXV", "INOD", "PDST", "KMER", "KMP"]
+           "LONG", "SSET", "LEXV", "INOD", "PDST", "KMER", "KMP",
+           "GRPH", "LCSM", "ORF", "PERM"]
 
 
 def run_idfn(module):
@@ -27,7 +28,9 @@ def is_equal_abs(x, y, abs_error=0.001):
     return abs(x-y) <= abs_error
 
 
-def compare_lines(runoutput, goodoutput):
+def compare_lines(runoutput, goodoutput, anyorder=False):
+    if anyorder:
+        runoutput, goodoutput = sorted(runoutput), sorted(goodoutput)
     for goodline, outline in zip(goodoutput, runoutput):
         gooditems = goodline.split()
         outitems = outline.split()
@@ -57,12 +60,19 @@ def test_python_chapel_run(module):
                                        cwd='./'+module)
     pyoutput = pyoutput.splitlines()
 
+    # if 'test.anyorder' exists, we can sort the lines
+    # before comparing
+    anyorder = False
+    anyorderfile = module + '/' + 'test.anyorder'
+    if os.path.isfile(anyorderfile):
+        anyorder = True
+
     # if a given solution exists, compare against it
     # otherwise, compare against each other
     if os.path.isfile(testout):
         with open(testout, 'r') as outfile:
             goodoutput = outfile.readlines()
-            compare_lines(pyoutput, goodoutput)
-#            compare_lines(chploutput, goodoutput)
+            compare_lines(pyoutput, goodoutput, anyorder)
+            compare_lines(chploutput, goodoutput, anyorder)
     else:
-        compare_lines(pyoutput, chploutput)
+        compare_lines(pyoutput, chploutput, anyorder)
