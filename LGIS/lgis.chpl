@@ -27,7 +27,7 @@ module LCIS {
     // calculate subsequence lengths
     length = 0;
     for i in 1..n {
-      for j in 1..n {
+      for j in 1..m {
         if seq1[i] == seq2[j] then
           length[i, j] = length[i-1, j-1] + 1;
         else 
