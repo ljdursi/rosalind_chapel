@@ -114,7 +114,7 @@ module SORT {
         break;
     }
     
-    bestpath.prepend(move);
+    bestpath.push_back(move);
     return (1 + shortest_dist, bestpath);
   }
 
