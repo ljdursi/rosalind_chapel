@@ -7,7 +7,7 @@ modules = ["CONS", "DNA", "FIB", "FIBD", "GC", "GRPH", "HAMM",
            "SPLC", "SSEQ", "SUBS", "TRAN", "LGIS", "PMCH", "TREE",
            "LONG", "SSET", "LEXV", "INOD", "PDST", "KMER", "KMP",
            "REAR", "SORT", "RSTR", "LCSQ", "CAT", "MMCH", "CORR",
-           "EDIT", "EVAL", "SPEC"]
+           "EDIT", "EVAL", "SPEC", "SCSP"]
 
 modules_need_blas = ["IEV", "LIA"]
 
