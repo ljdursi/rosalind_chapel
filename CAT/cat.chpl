@@ -58,7 +58,6 @@ module CAT {
     const base1 = seq(1);
     const base2 = matchings[base1];
 
-    var partitions : [1..0] int;
     for i in 2..seq.length {
         if seq(i) == base2 then
             if (a_minus_u[i] == 0) && (c_minus_g[i] == 0) then
