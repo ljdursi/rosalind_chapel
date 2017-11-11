@@ -10,7 +10,7 @@ modules = ["CONS", "FIBD", "HAMM", "LIA", "PROT",
            "GRPH", "LCSM", "ORF", "PERM", 'PPER', 'PROB', 'REVP',
            'SIGN', 'SSEQ', 'TRAN', "REAR", "SORT", "RSTR", "LCSQ",
            "CAT", "MMCH", "CORR", "EDIT", "EVAL", "SPEC", "SCSP",
-           "TRIE", "MOTZ"]
+           "TRIE", "MOTZ", "ASPC"]
 
 
 def run_idfn(module):
