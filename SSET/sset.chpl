@@ -1,4 +1,4 @@
-module PPER {
+module SSET {
   param defaultfilename="none";
   config const infile=defaultfilename;
   config const modulus=1000000 : uint;
