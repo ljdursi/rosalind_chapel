@@ -1,6 +1,6 @@
 #!/bin/bash
 cd || exit
-if [[ ! -d ~/chapel-1.16.0 ]]
+if [[ ! -f ~/chapel-1.16.0/util/setchplenv.bash ]]
 then
     wget https://github.com/chapel-lang/chapel/releases/download/1.16.0/chapel-1.16.0-1.tar.gz
     tar xzf chapel-1.16.0-1.tar.gz
