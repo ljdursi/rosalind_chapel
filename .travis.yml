@@ -5,18 +5,18 @@ os:
 
 env:
   global:
-    - TIMEFORMAT='%4R'
     - CHAPEL_HOME=~/chapel-1.16.0
     - CHPL_AUX_FILESYS=curl
 
 cache:
+  - pip
   directories:
     - $HOME/chapel-1.16.0
 
 install:
   - sudo apt-get update -qq
   - sudo apt-get install -qq gcc libopenblas-dev liblapack-dev wget 
-  - pip install pytest scipy
+  - sudo apt-get install time
   - ./build_install_chapel.sh
 
 script:

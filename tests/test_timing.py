@@ -31,7 +31,7 @@ def time_python(subdir):
 
     # if executable exists, run the chapel
     assert os.path.isfile(subdir+'/'+script)
-    pyoutput = subprocess.Popen(['/usr/bin/time', '-f', '%x %U %M',
+    pyoutput = subprocess.Popen(['/usr/bin/time', '-f', '%x %e %K',
                                  'python', script, testin],
                                 cwd='./'+subdir,
                                 stderr=subprocess.PIPE)
