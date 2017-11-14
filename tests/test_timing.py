@@ -11,7 +11,7 @@ def time_chapel(subdir):
 
     # if executable exists, run the chapel
     assert os.path.isfile(subdir+'/'+executable)
-    chploutput = subprocess.Popen(['/usr/bin/time', '-f', '%x %e %K',
+    chploutput = subprocess.Popen(['/usr/bin/time', '-f', '%x %e %M',
                                    executable, '--infile', testin],
                                   cwd='./'+subdir,
                                   stderr=subprocess.PIPE)
@@ -20,7 +20,7 @@ def time_chapel(subdir):
     items = result.split()
     assert int(items[0]) == 0
     time = float(items[1])
-    maxmem = int(items[2])
+    maxmem = items[2]
     return time, maxmem
 
 
@@ -31,7 +31,7 @@ def time_python(subdir):
 
     # if executable exists, run the chapel
     assert os.path.isfile(subdir+'/'+script)
-    pyoutput = subprocess.Popen(['/usr/bin/time', '-f', '%x %e %K',
+    pyoutput = subprocess.Popen(['/usr/bin/time', '-f', '%x %e %M',
                                  'python', script, testin],
                                 cwd='./'+subdir,
                                 stderr=subprocess.PIPE)
@@ -39,7 +39,7 @@ def time_python(subdir):
     items = result.split()
     assert int(items[0]) == 0
     time = float(items[1])
-    maxmem = int(items[2])
+    maxmem = items[2]
     return time, maxmem
 
 
