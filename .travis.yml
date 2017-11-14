@@ -9,7 +9,6 @@ env:
     - CHPL_AUX_FILESYS=curl
 
 cache:
-  - pip
   directories:
     - $HOME/chapel-1.16.0
 
