@@ -12,8 +12,8 @@ def string_logprob(seq, gcprob):
         nbases[base] += 1
 
     atprob = 1. - gcprob
-    logaprob = numpy.log(atprob/2.)
-    loggprob = numpy.log(gcprob/2.)
+    logaprob = numpy.log(atprob/2.+1.e-9)
+    loggprob = numpy.log(gcprob/2.+1.e-9)
 
     logprob = nbases['G']*loggprob + nbases['C']*loggprob
     logprob += nbases['A']*logaprob + nbases['T']*logaprob
