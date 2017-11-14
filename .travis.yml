@@ -4,9 +4,10 @@ os:
   - linux
 
 env:
-  - TIMEFORMAT='%4R'
-  - CHAPEL_HOME=~/chapel-1.16.0
-  - CHPL_AUX_FILESYS=curl
+  global:
+    - TIMEFORMAT='%4R'
+    - CHAPEL_HOME=~/chapel-1.16.0
+    - CHPL_AUX_FILESYS=curl
 
 cache:
   directories:
