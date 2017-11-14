@@ -11,7 +11,7 @@ def time_chapel(subdir):
 
     # if executable exists, run the chapel
     assert os.path.isfile(subdir+'/'+executable)
-    chploutput = subprocess.Popen(['/usr/bin/time', '-f', '%x %U %M',
+    chploutput = subprocess.Popen(['/usr/bin/time', '-f', '%x %e %K',
                                    executable, '--infile', testin],
                                   cwd='./'+subdir,
                                   stderr=subprocess.PIPE)
