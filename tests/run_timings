@@ -1,5 +1,13 @@
 #!/bin/bash
 
+function wrapper() {
+    local arg1="$1"
+    local arg2="$2"
+    local arg3="$3"
+
+    "$arg1" "$arg2" "$arg3" > /dev/null >2 err
+}
+
 function timing() {
     local arg1="$1"
     local arg2="$2"
@@ -7,7 +15,7 @@ function timing() {
     local dir="$4"
 
     pushd "$dir"
-    res=$(/usr/bin/time -f '%x %e %M' ("$arg1" "$arg2" "$arg3" > /dev/null >2 err) 2>&1 )
+    res=$(/usr/bin/time -f '%x %e %M' wrapper "$arg1" "$arg2" "$arg3" 2>&1 )
     IFS=' ' read -ra results <<< "$res"
     if [[ "${res[0]}" == "0" ]]
     then
