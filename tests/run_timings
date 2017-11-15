@@ -1,40 +1,42 @@
-#!/bin/bash
+#!/bin/bash -x
 
 function timing() {
     local arg1="$1"
     local arg2="$2"
     local arg3="$3"
     local dir="$4"
-    local ERRFILE="$5"
+    local ERR="$5"
 
     readonly TIMEFILE=./timeres.txt
 
-    pushd "$dir"
-    /usr/bin/time -o ./timeres.txt -f '%x %e %M' "$arg1" "$arg2" "$arg3" 2> "./${ERRFILE}" > /dev/null
+    last="${PWD}"
+    cd "$dir"
+#    /usr/bin/time -o "${TIMEFILE} -f '%x %e %M' "$arg1" "$arg2" "$arg3" 2> "./${ERR}" > /dev/null
+    gtime -o "${TIMEFILE}" -f '%x %e %M' "$arg1" "$arg2" "$arg3" 2> "./${ERR}" > /dev/null
     IFS=' ' read -ra results < "$TIMEFILE"
     rm "$TIMEFILE"
     if [[ "${results[0]}" == "0" ]]
     then
         2> echo -n "." 
         retval="${results[1]}	${results[2]}"
-        rm "./${ERRFILE}"
+       rm "./${ERR}"
     else
         2> echo -n "F" 
         retval="0	0"
     fi
-    popd
+    cd "$last"
     echo "${retval}"
 }
 
 function main() {
-    readonly DIRS=$( find . -name timing.in -exec dirname {} \; )
+    local DIRS=$( find . -name timing.in -exec dirname {} \; )
     readonly ERRFILE=err
 
     echo -n "Timing "
     for dir in $DIRS
     do
         bdir=$( basename "$dir" )
-        execname=$( echo "$bdir" | tr "[:upper:]" "[:lower:]" )
+        execname=./$( echo "$bdir" | tr "[:upper:]" "[:lower:]" )
         pyname="${execname}.py"
 
         chapout=$( timing "${execname}" "--infile" timing.in "${dir}" "$ERRFILE" )
@@ -50,7 +52,7 @@ function main() {
         then
             bdir=$( basename "$dir" )
             2> echo "Timing_${bdir}" 
-            2> cat "${dir}/err"
+            2> cat "${dir}/${ERRFILE}"
             pass=1
         fi
     done

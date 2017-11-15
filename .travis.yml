@@ -22,6 +22,5 @@ install:
 script:
   - source ${CHAPEL_HOME}/util/setchplenv.bash
   - pytest tests
-  - cat timings.txt
   - ./tests/run_timings
   - cat timings_2.txt
