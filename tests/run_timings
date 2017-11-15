@@ -27,7 +27,7 @@ function timing() {
         retval="0	0"
     fi
     popd
-    return "${retval}"
+    echo "${retval}"
 }
 
 function main() {
@@ -35,12 +35,13 @@ function main() {
     echo -n "Timing "
     for dir in $dirs
     do
-        execname=$( basename $dir | tr [A-Z] [a-z] )
+        bdir=$( basename $dir )
+        execname=$( echo "$bdir" | tr [A-Z] [a-z] )
         pyname="${execname}.py"
 
         chapout=$( timing ${execname} "--infile" timing.in "${dir}" )
         pyout=$( timing "python" "${pyname}" timing.in "${dir}" )
-        echo "${dir}	${chapout}	${pyout}" >> timings_2.txt
+        echo "${bdir}	${chapout}	${pyout}" >> timings_2.txt
     done
     echo ""
 
