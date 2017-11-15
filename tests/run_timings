@@ -11,8 +11,7 @@ function timing() {
 
     last="${PWD}"
     cd "$dir"
-#    /usr/bin/time -o "${TIMEFILE} -f '%x %e %M' "$arg1" "$arg2" "$arg3" 2> "./${ERR}" > /dev/null
-    gtime -o "${TIMEFILE}" -f '%x %e %M' "$arg1" "$arg2" "$arg3" 2> "./${ERR}" > /dev/null
+    /usr/bin/time -o "${TIMEFILE}" -f '%x %e %M' "$arg1" "$arg2" "$arg3" 2> "./${ERR}" > /dev/null
     IFS=' ' read -ra results < "$TIMEFILE"
     rm "$TIMEFILE"
     if [[ "${results[0]}" == "0" ]]
