@@ -1,6 +1,7 @@
 module EDTA {
   const defaultfilename="none";
   config const infile=defaultfilename;
+  enum move {ins, del, diag};
 
   proc input_channel(filename: string, defaultfilename: string) throws {
     var channel = stdin;
@@ -34,15 +35,14 @@ module EDTA {
   }
 
   proc edit_alignment(seq1, seq2) {
-    param move_ins=0, move_del=1, move_diag=2;
-
     const n = seq1.length;
     const m = seq2.length;
     var score : [0..n, 0..m] int;
-    var moves : [0..n, 0..m] int;
+    var moves : [0..n, 0..m] move;
 
     score[0, 1..m] = 1..m;
     score[1..n, 0] = 1..n;
+    moves = move.ins;
 
     var i, j: int;
     for i in 1..n {
@@ -53,9 +53,9 @@ module EDTA {
         const del = score[i, j-1] + 1;
 
         if seq1[i] == seq2[j] then
-          (score[i, j], moves[i,j]) = min((ins, move_ins), (del, move_del), (match, move_diag));
+          (score[i, j], moves[i,j]) = min((ins, move.ins), (del, move.del), (match, move.diag));
         else 
-          (score[i, j], moves[i,j]) = min((ins, move_ins), (del, move_del), (mismatch, move_diag));
+          (score[i, j], moves[i,j]) = min((ins, move.ins), (del, move.del), (mismatch, move.diag));
       }
     }
 
@@ -65,12 +65,12 @@ module EDTA {
     (i, j) = (n, m);
 
     while i > 0 || j > 0 {
-      if moves[i, j] == move_diag {
+      if moves[i, j] == move.diag {
         aug1 = seq1[i] + aug1;
         aug2 = seq2[j] + aug2;
         i -= 1;
         j -= 1;
-      } else if moves[i, j] == move_del {
+      } else if moves[i, j] == move.del {
         aug1 = "-" + aug1;
         aug2 = seq2[j] + aug2;
         j -= 1;
