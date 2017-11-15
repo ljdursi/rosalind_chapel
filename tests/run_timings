@@ -1,4 +1,4 @@
-#!/bin/bash -x
+#!/bin/bash
 
 function timing() {
     local arg1="$1"
@@ -58,5 +58,6 @@ function main() {
     exit $pass
 }
 
+rm -f timings_2.txt
 touch timings_2.txt
 main

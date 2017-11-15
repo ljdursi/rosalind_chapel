@@ -1,4 +1,4 @@
-module GRPH {
+module TRIE {
   const defaultfilename="none";
   config const infile=defaultfilename;
 
