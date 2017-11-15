@@ -1,0 +1,50 @@
+#!/bin/bash
+
+function timing() {
+    local arg1="$1"
+    local arg2="$2"
+    local arg3="$3"
+    local dir="$4"
+
+    pushd "$dir"
+    res=$(/usr/bin/time -f '%x %e %M' ("$arg1" "$arg2" "$arg3" > /dev/null >2 err) 2>&1 )
+    IFS=' ' read -ra results <<< "$res"
+    if [[ "${res[0]}" == "0" ]]
+    then
+        echo -n "." 
+        retval="${res[1]}	${res[2]}"
+        rm err
+    else
+        echo -n "F" 
+        retval="0	0"
+    fi
+    popd
+    return "${retval}"
+}
+
+function main() {
+    dirs=$( find . -name timing.in -exec dirname {} \; )
+    echo -n "Timing "
+    for dir in $dirs
+    do
+        execname=$( basename $dir | tr [A-Z] [a-z] )
+        pyname="${execname}.py"
+
+        chapout=$( timing ${execname} "--infile" timing.in "${dir}" )
+        pyout=$( timing "python" "${pyname}" timing.in "${dir}" )
+        echo "${dir}	${chapout}	${pyout}" >> timings_2.txt
+    done
+    echo ""
+
+    for dir in $dirs
+    do
+        if [[ -f "${dir}/err" ]]
+        then
+            >2 echo "Timing_${dir}" 
+            >2 cat "${dir}/err"
+        fi
+    done
+}
+
+touch timings_2.txt
+main
