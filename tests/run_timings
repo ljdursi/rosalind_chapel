@@ -1,59 +1,63 @@
 #!/bin/bash
 
-function wrapper() {
-    local arg1="$1"
-    local arg2="$2"
-    local arg3="$3"
-
-    "$arg1" "$arg2" "$arg3" > /dev/null >2 err
-}
-
 function timing() {
     local arg1="$1"
     local arg2="$2"
     local arg3="$3"
     local dir="$4"
+    local ERR="$5"
 
-    pushd "$dir"
-    res=$(/usr/bin/time -f '%x %e %M' wrapper "$arg1" "$arg2" "$arg3" 2>&1 )
-    IFS=' ' read -ra results <<< "$res"
-    if [[ "${res[0]}" == "0" ]]
+    readonly TIMEFILE=./timeres.txt
+
+    last="${PWD}"
+    cd "$dir"
+    /usr/bin/time -o "${TIMEFILE}" -f '%x %e %M' "$arg1" "$arg2" "$arg3" 2> "./${ERR}" > /dev/null
+    IFS=' ' read -ra results < "$TIMEFILE"
+    rm "$TIMEFILE"
+    if [[ "${results[0]}" == "0" ]]
     then
-        echo -n "." 
-        retval="${res[1]}	${res[2]}"
-        rm err
+        2> echo -n "." 
+        retval="${results[1]}	${results[2]}"
+       rm "./${ERR}"
     else
-        echo -n "F" 
+        2> echo -n "F" 
         retval="0	0"
     fi
-    popd
+    cd "$last"
     echo "${retval}"
 }
 
 function main() {
-    dirs=$( find . -name timing.in -exec dirname {} \; )
+    local DIRS=$( find . -name timing.in -exec dirname {} \; )
+    readonly ERRFILE=err
+
     echo -n "Timing "
-    for dir in $dirs
+    for dir in $DIRS
     do
-        bdir=$( basename $dir )
-        execname=$( echo "$bdir" | tr [A-Z] [a-z] )
+        bdir=$( basename "$dir" )
+        execname=./$( echo "$bdir" | tr "[:upper:]" "[:lower:]" )
         pyname="${execname}.py"
 
-        chapout=$( timing ${execname} "--infile" timing.in "${dir}" )
-        pyout=$( timing "python" "${pyname}" timing.in "${dir}" )
+        chapout=$( timing "${execname}" "--infile" timing.in "${dir}" "$ERRFILE" )
+        pyout=$( timing "python" "${pyname}" timing.in "${dir}" "$ERRFILE" )
         echo "${bdir}	${chapout}	${pyout}" >> timings_2.txt
     done
     echo ""
 
-    for dir in $dirs
+    pass=0
+    for dir in $DIRS
     do
-        if [[ -f "${dir}/err" ]]
+        if [[ -f "${dir}/${ERRFILE}" ]]
         then
-            >2 echo "Timing_${dir}" 
-            >2 cat "${dir}/err"
+            bdir=$( basename "$dir" )
+            2> echo "Timing_${bdir}" 
+            2> cat "${dir}/${ERRFILE}"
+            pass=1
         fi
     done
+    exit $pass
 }
 
+rm -f timings_2.txt
 touch timings_2.txt
 main

@@ -4,28 +4,29 @@ from __future__ import print_function
 import argparse
 import sys
 import numpy
-import scipy
 from scipy.stats import binom
+
 
 def allele_count_probabilities(ngen, first_parent, other_parents):
     # calculate transition matrices
-    T0 = numpy.zeros((3,3))
-    T2 = numpy.zeros((3,3))
+    T0 = numpy.zeros((3, 3))
+    T2 = numpy.zeros((3, 3))
 
     for i in range(3):
         for j in range(3):
             T0[i, j] = (2 - i)*(2 - j)/4.0
             T2[i, j] = i*j/4.0
 
-    # for first_parent = other_parents = [0,1,0], 
+    # for first_parent = other_parents = [0,1,0],
     # result will always be [1/4, 1/2, 1/4]
     allele_probs = first_parent[:]
     for gen in range(ngen):
         curprobs = allele_probs[:]
-        allele_probs[0] = numpy.dot( other_parents, numpy.dot(T0, curprobs) )
-        allele_probs[2] = numpy.dot( other_parents, numpy.dot(T2, curprobs) )
+        allele_probs[0] = numpy.dot(other_parents, numpy.dot(T0, curprobs))
+        allele_probs[2] = numpy.dot(other_parents, numpy.dot(T2, curprobs))
         allele_probs[1] = 1. - allele_probs[0] - allele_probs[2]
     return allele_probs
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()

@@ -1,14 +1,15 @@
 import pytest
 import subprocess
 
-modules = ["CONS", "DNA", "FIB", "FIBD", "GC", "GRPH", "HAMM",
-           "IPRB", "LCSM", "LEXF", "MPRT", "MRNA", "ORF", "PERM",
-           "PPER", "PROB", "PROT", "PRTM", "REVC", "REVP", "RNA", "SIGN",
+modules = ["CONS", "DNA", "FIB", "FIBD", "GC", "GRPH", "HAMM", "IPRB",
+           "LCSM", "LEXF", "MPRT", "MRNA", "ORF", "PERM", "PPER",
+           "PROB", "PROT", "PRTM", "REVC", "REVP", "RNA", "SIGN",
            "SPLC", "SSEQ", "SUBS", "TRAN", "LGIS", "PMCH", "TREE",
            "LONG", "SSET", "LEXV", "INOD", "PDST", "KMER", "KMP",
            "REAR", "SORT", "RSTR", "LCSQ", "CAT", "MMCH", "CORR",
            "EDIT", "EVAL", "SPEC", "SCSP", "TRIE", "MOTZ", "ASPC",
-           "NWCK", "SETO", "DBRU", "EDTA", "CONV", "NKEW"]
+           "NWCK", "SETO", "DBRU", "EDTA", "CONV", "INDC", "RNAS",
+           "NKEW"]
 
 modules_need_blas = ["IEV", "LIA"]
 
