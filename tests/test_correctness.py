@@ -3,14 +3,15 @@ import os.path
 import pytest
 
 
-modules = ["CONS", "FIBD", "HAMM", "LIA", "PROT",
-           "DNA", "GC", "IEV", "LEXF", "MPRT", "PRTM", "RNA", "SUBS",
-           "FIB", "IPRB", "LGIS", "MRNA", "REVC", "SPLC", "PMCH", "TREE",
+modules = ["CONS", "FIBD", "HAMM", "LIA", "PROT", "DNA", "GC",
+           "IEV", "LEXF", "MPRT", "PRTM", "RNA", "SUBS", "FIB",
+           "IPRB", "LGIS", "MRNA", "REVC", "SPLC", "PMCH", "TREE",
            "LONG", "SSET", "LEXV", "INOD", "PDST", "KMER", "KMP",
            "GRPH", "LCSM", "ORF", "PERM", 'PPER', 'PROB', 'REVP',
            'SIGN', 'SSEQ', 'TRAN', "REAR", "SORT", "RSTR", "LCSQ",
            "CAT", "MMCH", "CORR", "EDIT", "EVAL", "SPEC", "SCSP",
-           "TRIE", "MOTZ", "ASPC", "NWCK", "DBRU", "EDTA", "CONV"]
+           "TRIE", "MOTZ", "ASPC", "NWCK", "DBRU", "EDTA", "CONV",
+           "NKEW"]
 
 
 def run_idfn(module):
