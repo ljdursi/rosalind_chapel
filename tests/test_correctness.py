@@ -11,7 +11,7 @@ modules = ["CONS", "FIBD", "HAMM", "LIA", "PROT", "DNA", "GC",
            'SIGN', 'SSEQ', 'TRAN', "REAR", "SORT", "RSTR", "LCSQ",
            "CAT", "MMCH", "CORR", "EDIT", "EVAL", "SPEC", "SCSP",
            "TRIE", "MOTZ", "ASPC", "NWCK", "DBRU", "EDTA", "CONV",
-           "INDC", "RNAS", "NKEW", "ITWV"]
+           "INDC", "RNAS", "NKEW", "ITWV", "LREP"]
 
 
 def run_idfn(module):
