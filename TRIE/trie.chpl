@@ -57,5 +57,6 @@ module TRIE {
         trie.insert(sequence);
       }
     trie.edgelist();
+    delete trie;
   }
 }
