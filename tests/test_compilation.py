@@ -9,7 +9,7 @@ modules = ["CONS", "DNA", "FIB", "FIBD", "GC", "GRPH", "HAMM", "IPRB",
            "REAR", "SORT", "RSTR", "LCSQ", "CAT", "MMCH", "CORR",
            "EDIT", "EVAL", "SPEC", "SCSP", "TRIE", "MOTZ", "ASPC",
            "NWCK", "SETO", "DBRU", "EDTA", "CONV", "INDC", "RNAS",
-           "NKEW", "ITWV", "LREP", "CTBL", "FULL"]
+           "NKEW", "ITWV", "LREP", "CTBL", "FULL", "AFRQ"]
 
 modules_need_blas = ["IEV", "LIA"]
 
