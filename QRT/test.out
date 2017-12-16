@@ -1,0 +1,7 @@
+p{cat rabbit robot } { dog }
+p{mouse rabbit } { cat dog elephant }
+p{rabbit robot } { dog elephant }
+{cat, dog} {mouse, rabbit}
+{cat, elephant} {mouse, rabbit}
+{dog, elephant} {mouse, rabbit}
+{dog, elephant} {rabbit, robot}
