@@ -1,4 +1,4 @@
-module EDTA {
+module GLOB {
   config const defaultfilename = "none";
   config const infile = defaultfilename;
   config const scorefile = "blosum.txt";
