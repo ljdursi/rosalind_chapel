@@ -14,12 +14,19 @@ cache:
 
 install:
   - sudo apt-get update -qq
-  - sudo apt-get install -qq gcc libopenblas-dev liblapack-dev wget 
+  - sudo apt-get install -qq gcc libopenblas-dev liblapack-dev wget perl
   - sudo apt-get install time
   - pip install pytest scipy
   - ./build_install_chapel.sh
+  - mkdir -p ~/bin
+  - wget -O ~/bin/cloc https://github.com/AlDanial/cloc/raw/master/cloc
+  - chmod 755 ~/bin/cloc
+
 
 script:
   - source ${CHAPEL_HOME}/util/setchplenv.bash
   - pytest tests
   - cat timings.txt
+  - ./tests/run_locs
+  - cat lines_of_code.txt
+  - cat gzsizes.txt

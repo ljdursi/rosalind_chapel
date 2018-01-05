@@ -56,20 +56,20 @@ def test_python_chapel_run(module):
     executable = './' + lowercase
 
     # if executable exists, run the chapel
-    assert os.path.isfile(module+'/'+executable)
+    assert os.path.isfile('./problems/'+module+'/'+lowercase)
     chploutput = subprocess.check_output([executable, '--infile', 'test.in'],
-                                         cwd='./'+module)
+                                         cwd='./problems/'+module)
     chploutput = chploutput.splitlines()
 
     # run the python
     pyoutput = subprocess.check_output(['python', script, 'test.in'],
-                                       cwd='./'+module)
+                                       cwd='./problems/'+module)
     pyoutput = pyoutput.splitlines()
 
     # if 'test.anyorder' exists, we can sort the lines
     # before comparing
     anyorder = False
-    anyorderfile = module + '/' + 'test.anyorder'
+    anyorderfile = "problems/" + module + '/' + 'test.anyorder'
     if os.path.isfile(anyorderfile):
         anyorder = True
 

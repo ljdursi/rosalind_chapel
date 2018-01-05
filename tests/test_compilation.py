@@ -31,7 +31,7 @@ def test_basic_compilation(module):
     executable = lowercase
 
     ret_val = subprocess.check_call(['chpl', '--fast', '-o', executable,
-                                     sourcecode], cwd='./'+module)
+                                     sourcecode], cwd='./problems/'+module)
     assert ret_val == 0
 
 
@@ -46,5 +46,5 @@ def test_basic_compilation_blas(module):
     ret_val = subprocess.check_call(['chpl', '-o', executable, sourcecode,
                                      '-L'+BLASLIB, '-llapack', '-lblas',
                                      '-I'+BLASINC],
-                                    cwd='./'+module)
+                                    cwd='./problems/'+module)
     assert ret_val == 0

@@ -1,0 +1,27 @@
+#!/bin/bash
+
+readonly LOC_FILE="lines_of_code.txt"
+echo "#Prob	Chapel	Py	Delta	Ratio" > "${LOC_FILE}"
+~/bin/cloc --by-file problems \
+    | egrep "(py|chpl)" \
+    | sort \
+    | paste -sd ' \n' - \
+    | awk '{print $1 "\t" $4 "\t" $8 "\t" $4-$8 "\t" $4/$8}' \
+    | sed -e 's/^problems\///' -e 's/\/[a-z\.]*//' \
+    >> "${LOC_FILE}"
+
+
+readonly GZSIZE_FILE="gzsizes.txt"
+echo "#Prob	Chapel	Py	Ratio" > "${GZSIZE_FILE}"
+
+~/bin/cloc --strip-comments=strip --original-dir problems > /dev/null
+gzip problems/*/*.strip
+ls -n problems/*/*strip.gz \
+    | egrep '(py|chpl)' \
+    | awk '{print $9 "\t" $5}' \
+    | sed -e 's/^problems\///' \
+    | sort \
+    | paste -sd ' \n' - \
+    | awk '{print $1 "\t" $2 "\t" $4 "\t" $2/$4}' \
+    | sed -e 's/\/[a-z]*.[a-z]*.strip.gz//' \
+    >> "${GZSIZE_FILE}"

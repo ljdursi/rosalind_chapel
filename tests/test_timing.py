@@ -10,10 +10,10 @@ def time_chapel(subdir):
     executable = './' + lowercase
 
     # if executable exists, run the chapel
-    assert os.path.isfile(subdir+'/'+executable)
+    assert os.path.isfile('./problems/' + subdir + '/' + lowercase)
     chploutput = subprocess.Popen(['/usr/bin/time', '-f', '%x %e %M',
                                    executable, '--infile', testin],
-                                  cwd='./'+subdir,
+                                  cwd='./problems/'+subdir,
                                   stderr=subprocess.PIPE)
 
     result = chploutput.communicate()[1]
@@ -30,10 +30,10 @@ def time_python(subdir):
     testin = 'timing.in'
 
     # if executable exists, run the chapel
-    assert os.path.isfile(subdir+'/'+script)
+    assert os.path.isfile('./problems/' + subdir + '/' + script)
     pyoutput = subprocess.Popen(['/usr/bin/time', '-f', '%x %e %M',
                                  'python', script, testin],
-                                cwd='./'+subdir,
+                                cwd='./problems/'+subdir,
                                 stderr=subprocess.PIPE)
     result = pyoutput.communicate()[1]
     items = result.split()
@@ -44,13 +44,12 @@ def time_python(subdir):
 
 
 def test_timings():
-    subdirs = [d for d in os.listdir('.')
-               if os.path.isdir(os.path.join('.', d))]
+    subdirs = [d for d in os.listdir('./problems/')]
 
     with open('timings.txt', 'w') as f:
         for subdir in subdirs:
             print(subdir)
-            testdir = os.path.join('.', subdir)
+            testdir = os.path.join('./problems/', subdir)
             testinput = os.path.join(testdir, 'timing.in')
             print(testinput)
             if os.path.isfile(testinput):
