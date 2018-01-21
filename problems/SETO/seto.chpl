@@ -1,4 +1,4 @@
-module NWCK {
+module SETO {
   use Regexp;
   const defaultfilename="none";
   config const infile=defaultfilename;
