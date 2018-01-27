@@ -45,18 +45,16 @@ module OAP {
     var moves : [0..n, 0..m] move;
 
     moves = move.start;
-    score = 0;
     for i in 1..n {
       score[i, 0] = i*gap_score;
       moves[i, 0] = move.ins;
     }
 
     for i in 1..n {
-      const basei = seq1(i);
+      const basei = ascii(seq1(i));
       for j in 1..m {
-        const basej = seq2(j);
         var match_delta = mismatch_score;
-        if basei == basej then
+        if basei == ascii(seq2(j)) then
           match_delta = match_score;
 
         const match = score[i-1, j-1] + match_delta;
@@ -113,7 +111,7 @@ module OAP {
       for (seqlabel, seq) in fasta_iterator(inchannel) do
         seqs.push_back(seq.strip());
 
-      var score = overlap_alignment(seqs[2], seqs[1], match_score, mismatch_score, gap_score);
+      const score = overlap_alignment(seqs[2], seqs[1], match_score, mismatch_score, gap_score);
       writeln(score[1]);
       writeln(score[3]);
       writeln(score[2]);
