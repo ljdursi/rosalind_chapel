@@ -42,7 +42,7 @@ module TRAN {
     var transversions = 0;
 
     for (base1, base2) in zip(seq1, seq2) {
-        if base1 != base2 {
+        if ascii(base1) != ascii(base2) {
             if basetype[base1] != basetype[base2] then
                 transversions += 1;
             else

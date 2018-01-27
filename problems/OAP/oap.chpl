@@ -70,7 +70,7 @@ module OAP {
     var j = m;
     const dist = max reduce score[0..n, j];
 
-    // highest i that hsa maximum score
+    // highest i that has maximum score
     var i = 0;
     for maxi in 0..n do 
       if score[maxi, j] == dist then

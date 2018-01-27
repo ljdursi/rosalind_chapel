@@ -52,7 +52,7 @@ module CTEA {
         const ins = score[i-1, j] + 1;
         const del = score[i, j-1] + 1;
 
-        if seq1[i] != seq2[j] then
+        if ascii(seq1[i]) != ascii(seq2[j]) then
           match = score[i-1, j-1] + 1;
 
         const minscore = min(match, ins, del);

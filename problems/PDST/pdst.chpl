@@ -42,7 +42,7 @@ module SSEQ {
 
     var ndiff = 0 : uint;
     for (b1, b2) in zip(seq1, seq2) do
-      if b1 != b2 then
+      if ascii(b1) != ascii(b2) then
         ndiff += 1;
 
     return 1.0 * ndiff / n;

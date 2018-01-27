@@ -52,7 +52,7 @@ module EDTA {
         const ins = score[i-1, j] + 1;
         const del = score[i, j-1] + 1;
 
-        if seq1[i] == seq2[j] then
+        if ascii(seq1[i]) == ascii(seq2[j]) then
           (score[i, j], moves[i,j]) = min((ins, move.ins), (del, move.del), (match, move.diag));
         else 
           (score[i, j], moves[i,j]) = min((ins, move.ins), (del, move.del), (mismatch, move.diag));

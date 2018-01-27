@@ -49,7 +49,7 @@ module EDIT {
         const mismatch = score[i-1, j-1] + 1;
         const insertion = score[i-1, j] + 1;
         const deletion = score[i, j-1] + 1;
-        if seq1[i] == seq2[j] then
+        if ascii(seq1[i]) == ascii(seq2[j]) then
           score[i, j] = min(match, insertion, deletion);
         else 
           score[i, j] = min(mismatch, insertion, deletion);
