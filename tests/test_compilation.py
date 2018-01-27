@@ -13,7 +13,7 @@ modules = ["CONS", "DNA", "FIB", "FIBD", "GC", "GRPH", "HAMM", "IPRB",
            "QRT", "GLOB", "PCOV", "PRSM", "LOCA", "SIMS", "CTEA",
            "SEXL", "CSTR", "SGRA", "ROOT", "SUFF", "OAP", "PDPL"]
 
-modules_need_blas = ["IEV", "LIA", "WFMD"]
+modules_need_blas = ["IEV", "LIA", "WFMD", "FOUN"]
 
 
 def compile_idfn(module):
@@ -30,8 +30,9 @@ def test_basic_compilation(module):
     sourcecode = lowercase+'.chpl'
     executable = lowercase
 
-    ret_val = subprocess.check_call(['chpl', '--fast', '-o', executable,
-                                     sourcecode], cwd='./problems/'+module)
+    ret_val = subprocess.check_call(['chpl', '--fast', '--local',
+                                     '-o', executable, sourcecode],
+                                    cwd='./problems/'+module)
     assert ret_val == 0
 
 
