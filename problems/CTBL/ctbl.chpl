@@ -27,7 +27,7 @@ module CTBL {
     var weight: int;
   }
 
-  proc parseweight(name: string) : (string, int) {
+  proc parseweight(name: string) : (string, int) throws {
     if name.length == 0 then
       return ("", 0);
 
@@ -35,7 +35,10 @@ module CTBL {
     if items.size == 1 then
       return (items[1], 1);
     else
-      return (items[1], items[2]:int);
+      try! {
+        const wt = items[2]:int;
+        return (items[1], wt);
+      }
   }
 
   proc tokenize(newick) throws {

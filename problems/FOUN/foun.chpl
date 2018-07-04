@@ -19,7 +19,7 @@ module FOUN {
     channel.readline(line);
     line.strip();
     for item in line.split() do
-      numalleles.push_back(item:int);
+      try! numalleles.push_back(item:int);
 
     return (n, m, numalleles);
   }

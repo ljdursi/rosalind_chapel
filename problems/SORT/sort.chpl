@@ -22,11 +22,11 @@ module SORT {
   }
 
 
-  proc permutation_from_line(line) {
+  proc permutation_from_line(line) throws {
     const items = line.split();
     var permutation : [1..#items.size] int;
     for i in 1..#items.size do
-        permutation[i] = items[i]:int;
+        try! permutation[i] = items[i]:int;
     return permutation;
   }
 
