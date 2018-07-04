@@ -5,12 +5,12 @@ os:
 
 env:
   global:
-    - CHAPEL_HOME=~/chapel-1.16.0
+    - CHAPEL_HOME=~/chapel-1.17.1
     - CHPL_AUX_FILESYS=curl
 
 cache:
   directories:
-    - $HOME/chapel-1.16.0
+    - $HOME/chapel-1.17.1
 
 install:
   - sudo apt-get update -qq
