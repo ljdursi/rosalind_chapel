@@ -58,7 +58,7 @@ module LREP {
   
     for i in 1..#nchildren {
       nodes += children[i:int];
-      subtrees[children[i:int]] = i;
+      subtrees[children[i:int]] = i:uint;
     }
   
     for line in all_lines {
@@ -77,7 +77,7 @@ module LREP {
   
   proc buildTree(ref lines: list(string), fullstring: string,
                  name: string, start: uint = 0,
-                 length: uint = 0, totallength: uint = 0) : Tree {
+                 length: uint = 0, totallength: uint = 0) : Tree throws {
     const l = fullstring.length;
     var children_names: [1..0] string;
     var children_starts: [1..0] uint;
@@ -94,20 +94,22 @@ module LREP {
     var line = lines.pop_front();
     var items = line.split(); 
     while (items[1] == name) {
-      const parent_name = items[1];
-      const child_name = items[2];
-      const start = items[3] : uint;
-      const len = items[4] : uint;
-  
-      children_names.push_back(child_name);
-      children_starts.push_back(start);
-      children_lens.push_back(len);
-  
-      if lines.size > 0 {
-        line = lines.pop_front();
-        items = line.split(); 
-      } else 
-        break;
+      try! {
+        const parent_name = items[1];
+        const child_name = items[2];
+        const start = items[3] : uint;
+        const len = items[4] : uint;
+    
+        children_names.push_back(child_name);
+        children_starts.push_back(start);
+        children_lens.push_back(len);
+    
+        if lines.size > 0 {
+          line = lines.pop_front();
+          items = line.split(); 
+        } else 
+          break;
+      }
     } 
     lines.push_front(line);
   

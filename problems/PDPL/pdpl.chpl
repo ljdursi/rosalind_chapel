@@ -17,7 +17,7 @@ module PDPL {
       const items = sline.split();
       var ints : [1..#items.size] int;
       for i in 1..#items.size do
-        ints[i] = items[i]:int;
+        try! ints[i] = items[i]:int;
 
       sort(ints);
       yield ints;

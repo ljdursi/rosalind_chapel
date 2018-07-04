@@ -20,14 +20,14 @@ module WFMD {
   proc n_choose_k(n: int, k: int): int {
     // pascal's triangle
     var triangle = Matrix(n+1, n+1, int);
-    for i in 0..n do
-        triangle[i, 0] = 1;
+    for i in 1..n+1 do
+        triangle[i, 1] = 1;
 
-    for i in 1..n do
-      for j in 1..i do
+    for i in 2..n+1 do
+      for j in 2..i do
         triangle[i, j] = triangle[(i-1), (j-1)] + triangle[i-1, j];
 
-    return triangle[n, k];
+    return triangle[n+1, k+1];
   }
 
   proc transition_matrix(npop) {
@@ -40,7 +40,7 @@ module WFMD {
 
     for j in 0..twon do
       for i in 0..twon do
-        T[j, i] = twon_choose_k[j]*((1.0*(i)/twon)**j)*((1.0*(twon-(i))/twon)**(twon-(j)));
+        T[(j+1):int, (i+1):int] = twon_choose_k[j]*((1.0*(i)/twon)**j)*((1.0*(twon-(i))/twon)**(twon-(j)));
 
     return T;
   }
@@ -57,7 +57,7 @@ module WFMD {
 
   proc initial_vector(npop, m) {
     var v = Vector(2*npop+1);
-    v[m] = 1;
+    v[m+1] = 1;
     return v;
   }
 
@@ -67,7 +67,7 @@ module WFMD {
       var v = initial_vector(npop, m);
       v = evolve(v, npop, ngen);
 
-      writeln(+ reduce v[0..2*npop-k]);
+      writeln(+ reduce v[1..2*npop-k+1]);
     }
   }
 }

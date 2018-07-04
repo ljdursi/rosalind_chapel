@@ -27,15 +27,19 @@ module CTBL {
     var weight: int;
   }
 
-  proc parseweight(name: string) : (string, int) {
+  proc parseweight(name: string) : (string, int) throws {
     if name.length == 0 then
       return ("", 0);
 
     var items = name.split(':');
     if items.size == 1 then
       return (items[1], 1);
-    else
-      return (items[1], items[2]:int);
+    else {
+      try! {
+        const wt:int = items[2]:int;
+        return (items[1], wt);
+      }
+    }
   }
 
   proc tokenize(newick) throws {
@@ -124,7 +128,7 @@ module CTBL {
       const high = tokens.domain.dim(1).high;
       const n = tokens.size;
 
-      super.init();
+      this.complete();
       if (n > 0) {
         this.name = tokens[high].name;
       }

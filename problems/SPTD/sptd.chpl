@@ -111,7 +111,7 @@ module SPTD {
       const high = tokens.domain.dim(1).high;
       const n = tokens.size;
 
-      super.init();
+      this.complete();
       if (n > 0) {
         this.name = tokens[high].name;
       }

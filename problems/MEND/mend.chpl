@@ -25,20 +25,20 @@ module MEND {
     var T2 = Matrix(3, 3);  
     var allele_probs = Vector(3), curprobs = Vector(3);
 
-    for i in 0..2 do
-      for j in 0..2 {
-        T0[i, j] = (2-i)*(2-j)/4.0;
-        T2[i, j] = i*j/4.0;
+    for i in 1..3 do
+      for j in 1..3 {
+        T0[i, j] = (3-i)*(3-j)/4.0;
+        T2[i, j] = (i-1)*(j-1)/4.0;
       }
 
-    allele_probs[0] = dot( parent2, dot( T0, parent1 ));
-    allele_probs[2] = dot( parent2, dot( T2, parent1 ));
-    allele_probs[1] = 1.0 - allele_probs[0] - allele_probs[2];
+    allele_probs[1] = dot( parent2, dot( T0, parent1 ));
+    allele_probs[3] = dot( parent2, dot( T2, parent1 ));
+    allele_probs[2] = 1.0 - allele_probs[1] - allele_probs[3];
     return allele_probs;
   }
 
   proc genotype_to_probabilities(gt) {
-    const prob_dict = ['AA' => 0, 'Aa' => 1, 'aA' => 1, 'aa' => 2];
+    const prob_dict = ['AA' => 1, 'Aa' => 2, 'aA' => 2, 'aa' => 3];
 
     var p = Vector(3);
     p[prob_dict[gt]] = 1.0;
