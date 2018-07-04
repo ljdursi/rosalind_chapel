@@ -34,11 +34,12 @@ module CTBL {
     var items = name.split(':');
     if items.size == 1 then
       return (items[1], 1);
-    else
+    else {
       try! {
-        const wt = items[2]:int;
+        const wt:int = items[2]:int;
         return (items[1], wt);
       }
+    }
   }
 
   proc tokenize(newick) throws {
@@ -127,7 +128,7 @@ module CTBL {
       const high = tokens.domain.dim(1).high;
       const n = tokens.size;
 
-      super.init();
+      this.complete();
       if (n > 0) {
         this.name = tokens[high].name;
       }

@@ -102,7 +102,7 @@ module SUFF {
 
     proc init(sequence) {
       root = new Node();
-      super.init();
+      this.complete();
       for i in 1..sequence.length do
         insert(sequence[i..]);
     }
