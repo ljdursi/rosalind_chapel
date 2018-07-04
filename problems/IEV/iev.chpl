@@ -23,21 +23,21 @@ module IEV {
     var T2 = Matrix(3, 3);  
     var allele_probs = Vector(3), curprobs = Vector(3);
 
-    for i in 0..2 do
-      for j in 0..2 {
-        T0[i, j] = (2-i)*(2-j)/4.0;
-        T2[i, j] = i*j/4.0;
+    for i in 1..3 do
+      for j in 1..3 {
+        T0[i, j] = (3-i)*(3-j)/4.0;
+        T2[i, j] = (i-1)*(j-1)/4.0;
       }
 
-    allele_probs[0] = dot( parent2, dot( T0, parent1 ));
-    allele_probs[2] = dot( parent2, dot( T2, parent1 ));
-    allele_probs[1] = 1.0 - allele_probs[0] - allele_probs[2];
+    allele_probs[1] = dot( parent2, dot( T0, parent1 ));
+    allele_probs[3] = dot( parent2, dot( T2, parent1 ));
+    allele_probs[2] = 1.0 - allele_probs[1] - allele_probs[3];
     return allele_probs;
   }
 
   proc frac_expected_dominant(parent1, parent2) {
     var probs = allele_count_probabilities(parent1, parent2);
-    return probs[2] + probs[1];
+    return probs[3] + probs[2];
   }
 
   proc main() {
