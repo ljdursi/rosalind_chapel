@@ -24,33 +24,33 @@ module LIA {
     var T2 = Matrix(3, 3);  
     var allele_probs = Vector(3), curprobs = Vector(3);
 
-    for i in 0..2 do
-      for j in 0..2 {
-        T0[i, j] = (2-i)*(2-j)/4.0;
-        T2[i, j] = i*j/4.0;
+    for i in 1..3 do
+      for j in 1..3 {
+        T0[i, j] = (3-i)*(3-j)/4.0;
+        T2[i, j] = (i-1)*(j-1)/4.0;
       }
 
     allele_probs = original;
     for gen in 1..ngen {
         curprobs = allele_probs;
-        allele_probs[0] = dot( other, dot( T0, curprobs ));
-        allele_probs[2] = dot( other, dot( T2, curprobs ));
-        allele_probs[1] = 1.0 - allele_probs[0] - allele_probs[2];
+        allele_probs[1] = dot( other, dot( T0, curprobs ));
+        allele_probs[3] = dot( other, dot( T2, curprobs ));
+        allele_probs[2] = 1.0 - allele_probs[1] - allele_probs[3];
     }
     return allele_probs;
   }
 
   proc n_choose_k(n: uint, k: uint): uint {
     // pascal's triangle
-    var triangle = Matrix(n+1, n+1, uint);
-    for i in 0..n do
-        triangle[i:int, 0:int] = 1;
+    var triangle = Matrix((n+1):int, (n+1):int, uint);
+    for i in 1..n+1 do
+        triangle[i:int, 1:int] = 1;
 
-    for i in 1..n do
-      for j in 1..i do
+    for i in 2..n+1 do
+      for j in 2..i do
         triangle[i:int, j:int] = triangle[(i-1):int, (j-1):int] + triangle[(i-1):int, (j):int];
 
-    return triangle[n:int, k:int];
+    return triangle[(n+1):int, (k+1):int];
   }
 
   proc binom_pmf(x: uint, n: uint, p: real) : real {
@@ -65,7 +65,7 @@ module LIA {
       const others = Vector([0.0, 1.0, 0.0]);
       
       const probs = allele_count_probabilities(n, tom, others);
-      const prob_one_each = probs[1]**nalleles;
+      const prob_one_each = probs[2]**nalleles;
   
       var cmf = 1.0;
       for i in 0..n-1 {
