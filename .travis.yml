@@ -25,7 +25,7 @@ install:
 
 script:
   - source ${CHAPEL_HOME}/util/setchplenv.bash
-  - pytest tests
+  - travis_wait 30 pytest tests
   - cat timings.txt
   - ./tests/run_locs
   - cat lines_of_code.txt
