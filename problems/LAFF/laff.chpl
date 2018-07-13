@@ -158,18 +158,18 @@ module LAFF {
         moves[i, j, x_mtx, 1] = m_mtx;
 
         for mtx in 1..3 do
-          if (scores[mtx] > moves[i, j, m_mtx, 0]) {
+          if (scores[mtx] > moves[i, j, x_mtx, 0]) {
             moves[i, j, x_mtx, 0] = scores[mtx];
             moves[i, j, x_mtx, 1] = mtx;
           }
       }
     }
 
-    // writeln(moves[1..n, 1..m, m_mtx, 1]);
+    // writeln(moves[1..n, 1..m, m_mtx, 0]);
     // writeln('--');
-    // writeln(moves[1..n, 1..m, x_mtx, 1]);
+    // writeln(moves[1..n, 1..m, x_mtx, 0]);
     // writeln('--');
-    // writeln(moves[1..n, 1..m, y_mtx, 1]);
+    // writeln(moves[1..n, 1..m, y_mtx, 0]);
 
     // backtrack
     var i = n;

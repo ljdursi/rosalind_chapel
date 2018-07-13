@@ -54,10 +54,6 @@ def readtable(filename):
 
     return table
 
-def writeln_mtx(mtx):
-    for row in mtx:
-        print(" ".join([str(item) for item in row]))
-
 def alignment(seq1, seq2, subscores, gap, extend):
     """
     Global, Affine alignment
@@ -143,12 +139,6 @@ def alignment(seq1, seq2, subscores, gap, extend):
                 x_score[i, j, 0] = 0
                 x_score[i, j, 1] = 3
 
-    # writeln_mtx(m_score[1:n+1, 1:m+1, 1])
-    #print('--')
-    #writeln_mtx(x_score[1:n+1, 1:m+1, 1])
-    #print('--')
-    #writeln_mtx(y_score[1:n+1, 1:m+1, 1])
-
     # backtrack
     options = []
     for mtx in range(3):
@@ -160,8 +150,6 @@ def alignment(seq1, seq2, subscores, gap, extend):
     sub1 = ""
     sub2 = ""
     sc = dist
-
-    # print(dist, mtx, i, j)
 
     while i > 0 and j > 0 and sc > 0 and scores[i, j, mtx, 1] != 3:
         move_score, move_mtx = scores[i, j, mtx, :]
@@ -177,7 +165,6 @@ def alignment(seq1, seq2, subscores, gap, extend):
             move_i, move_j = i-1, j
 
         sc, mtx, i, j = move_score, move_mtx, move_i, move_j
-        # print(mtx, i, j)
 
     return dist, sub1, sub2
 
