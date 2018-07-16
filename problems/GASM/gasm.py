@@ -1,5 +1,8 @@
 #!/usr/bin/env python
-
+"""
+Genome Assembly With Reads
+http://rosalind.info/problems/gasm/
+"""
 from __future__ import print_function
 import argparse
 import sys
@@ -8,6 +11,9 @@ from collections import defaultdict
 _COMPLEMENT = {'A':'T', 'C':'G', 'G':'C', 'T':'A'}
 
 def reverse_complement(seq):
+    """
+    Reverse complement of a sring
+    """
     rc = ""
     for base in seq[::-1]:
         rc += _COMPLEMENT[base]
@@ -15,10 +21,22 @@ def reverse_complement(seq):
 
 
 def cyclic_rc_match(seq1, seq2):
+    """
+    Are these strings consistent with being cyclic
+    shifts of each other, one being a reverse
+    complement?
+    """
+    if len(seq1) != len(seq2):
+        return False
     return reverse_complement(seq2) in seq1+seq1
 
 
 def generate_kmers(reads, k):
+    """
+    The list of kmers, possibly not unique, that
+    can come from the given reads or their reverse
+    complements
+    """
     kmers = []
     n = len(reads[0])
     for read in reads:
@@ -31,6 +49,10 @@ def generate_kmers(reads, k):
     
 
 def debruijn_graph(kmers):
+    """
+    Return a dictionary of edges:
+    start_vtx => [end_vtx1, end_vtx2...]
+    """
     prefixes = defaultdict(set)
 
     for sequence in kmers:
