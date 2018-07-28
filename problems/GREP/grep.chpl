@@ -20,9 +20,6 @@ module GREP {
     var D: domain(1);
     var l: [D] int;
   }
-  record arrstring {
-    var l: [1..0] string;
-  }
 
   proc debruijn_graph(kmers) {
     const nkmers = kmers.size;
@@ -47,32 +44,37 @@ module GREP {
     return edges;
   }
 
+  proc string_from_path(path, seqs) {
+    var str = "";
+    for idx in path.l do
+        str += seqs[idx](1);
+    
+    return str;
+  }
+
   proc dfs_paths(graph, start, sequences) {
     var pathstrings: domain(string);
-    var stack: [1..0] (int, arrnode);
+    var stack: [1..0] arrnode;
 
     var startpath : arrnode;
-    startpath.l.push_back(start);
+    startpath.D = 1..1;
+    startpath.l = [ start ];
+    stack.push_back(startpath);
 
-    stack.push_back((start, startpath));
     while stack.size > 0 {
-        var (vtx, path) = stack[1];
-        stack.remove(1);
+      const path = stack[stack.size];
+      const vtx = path.l[path.l.size];
+      stack.pop_back();
 
-        const neighbors = graph[vtx] - path.l : domain(int);
-        if neighbors.size == 0 && path.l.size == sequences.size {
-            var str = "";
-            for idx in path.l do
-                str += sequences[idx](1);
+      const neighbors = graph[vtx] - path.l : domain(int);
+      for nextnode in neighbors {
+        var np = path;
+        np.l.push_back(nextnode);
+        stack.push_back(np);
+      }
 
-            pathstrings.add(str);
-        }
-
-        for nextnode in neighbors {
-            var np = path;
-            np.l.push_back(nextnode);
-            stack.insert(1, (nextnode, np));
-        }
+      if path.l.size == sequences.size then
+        pathstrings.add( string_from_path(path, sequences) );
 
     }
     return pathstrings;

@@ -11,25 +11,29 @@ def debruijn_graph(kmers):
 
     for idx, sequence in enumerate(kmers):
         prefix = sequence[:-1]
-        prefixes[prefix].add((idx, sequence))
+        prefixes[prefix].add(idx)
 
     edges = defaultdict(set)
     for idx, sequence in enumerate(kmers):
         suffix = sequence[1:]
         for node in prefixes[suffix]:
-            edges[(idx, sequence)].add(node)
+            edges[idx].add(node)
 
     return edges
 
 
-def dfs_paths(graph, start):
-    stack = [(start, [start])]
+def dfs_paths(graph, start, sequences):
+    stack = [[start]]
     while stack:
-        (vertex, path) = stack.pop()
-        for next_node in graph[vertex] - set(path):
-            stack.append((next_node, path + [next_node]))
+        path = stack.pop()
+        vertex = path[-1]
+        neighbors = graph[vertex] - set(path)
+        for next_node in neighbors:
+            stack.append(path + [next_node])
 
-        yield "".join([seq[0] for idx, seq in path])
+        if len(path) == len(sequences):
+            result = "".join([sequences[idx][0] for idx in path])
+            yield result
 
 
 if __name__ == "__main__":
@@ -44,8 +48,8 @@ if __name__ == "__main__":
             reads.append(line.strip())
 
         graph = debruijn_graph(reads)
-        paths = set(dfs_paths(graph, (0, reads[0])))
-        fullpaths = [path for path in paths if len(path) == len(reads)]
-        for path in fullpaths:
+
+        paths = set(dfs_paths(graph, 0, reads))
+        for path in paths:
             print(path)
 
