@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 from __future__ import print_function
 import argparse
 import sys
@@ -83,7 +82,8 @@ class Tree(object):
     def edgewalk(self):
         for child in self._children:
             yield self, child
-            yield from child.edgewalk()
+            for edge in child.edgewalk():
+                yield edge
 
     def nquartets(self, modulus):
         nq = 0
