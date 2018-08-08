@@ -21,14 +21,14 @@ module KSIM {
   proc banded_alignment_mtx(ref score, const seq1, const seq2, const bandwidth) {
     // Performs a banded alignment of given bandwidth between
     // seq1 + seq2
-    const n = seq1.length;
-    const m = seq2.length;
+    const n = seq1.size;
+    const m = seq2.size;
 
     for i in 1..n {
-      const basei = seq1(i);
+      const basei = seq1[i];
 
       for j in max(1, i-bandwidth)..min(m, i+bandwidth) {
-        const basej = seq2(j);
+        const basej = seq2[j];
         const match = if basei == basej then score[i-1, j-1] else score[i-1, j-1]+1;
         const ins = score[i-1, j] + 1;
         const del = score[i, j-1] + 1;
@@ -45,6 +45,8 @@ module KSIM {
       const k = lines[1] : int;
       const (s, t) = (lines[2], lines[3]);
       const (m, n) = (s.length, t.length);
+      const motif : [1..m] int = [char in s] ascii(char);
+      const sequence : [1..n] int = [char in t] ascii(char);
 
       // set up boundary conditions for banded alignment mtx once
       var score : [0..m, 0..m+k] int = 10*k;
@@ -52,13 +54,11 @@ module KSIM {
       score[1..k, 0] = 1..k;
 
       for i in 1..(n-m+k+1) {
-        if i % 100 == 0 then
-          stderr.writeln(i);
         const last = min(n, i+m+k-1);
         const len = last-i+1;
 
-        // perform a banded alignment starting at t(i)
-        banded_alignment_mtx(score, s, t(i..last), k);
+        // perform a banded alignment starting at sequence(i)
+        banded_alignment_mtx(score, motif, sequence[i..last].reindex(1..len), k);
 
         // output any full motif alignments with score
         // at or under the given threshold

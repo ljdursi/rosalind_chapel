@@ -8,19 +8,13 @@ import argparse
 import sys
 import numpy
 
-
-def banded_alignment_mtx(seq1, seq2, bandwidth):
+def banded_alignment_mtx(score, seq1, seq2, bandwidth):
     """
     Return the score matrix of the banded edit alignment
     of seq1 and seq2
     """
     n = len(seq1)
     m = len(seq2)
-
-    score = numpy.zeros((n+1, m+1), dtype=numpy.int)
-    score[:, :] = 10*bandwidth
-    score[0:bandwidth+1, 0] = range(0, bandwidth+1)
-    score[0, 1:bandwidth+1] = range(1, bandwidth+1)
 
     for i in range(1, n+1):
         start = max(1, i-bandwidth)
@@ -31,8 +25,6 @@ def banded_alignment_mtx(seq1, seq2, bandwidth):
             deletion = score[i, j-1] + 1
 
             score[i, j] = min(match, insertion, deletion)
-
-    return score
 
 
 if __name__ == "__main__":
@@ -50,15 +42,17 @@ if __name__ == "__main__":
         m = len(motif)
         n = len(sequence)
 
-        for i in range(n-m+k+1):
-            if i % 100 == 0:
-                print(i, file=sys.stderr)
+        # set up scores matrix + boundary conditions once
+        score = numpy.zeros((m+1, m+k+1), dtype=numpy.int)
+        score[:, :] = 10*k
+        score[0:k+1, 0] = range(0, k+1)
+        score[0, 1:k+1] = range(1, k+1)
 
-            last = min(n, i+m+k-1)
-            # length = last-i+1
-            scores = banded_alignment_mtx(motif, sequence[i:last+1], k)
-            _, length = scores.shape
+        for i in range(n-m+k+1):
+            last = min(n, i+m+k)
+            length = last-i+1
+            banded_alignment_mtx(score, motif, sequence[i:last], k)
 
             for col in range(max(1, length-2*k-1), length):
-                if scores[m, col] <= k:
+                if score[m, col] <= k:
                     print(i+1, col)
