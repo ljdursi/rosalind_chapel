@@ -1,0 +1,3 @@
+(((mouse,cat),elephant))dog;
+(((elephant,mouse),cat))dog;
+(((elephant,cat),mouse))dog;
