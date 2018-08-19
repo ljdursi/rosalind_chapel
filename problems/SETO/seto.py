@@ -13,7 +13,7 @@ def set_from_string(line):
 
 def printset(inputset):
     output = "{"
-    output += ", ".join([str(i) for i in inputset])
+    output += ", ".join([str(i) for i in sorted(inputset)])
     output += "}"
     print(output)
 

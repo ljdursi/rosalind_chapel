@@ -33,6 +33,15 @@ module SETO {
     return result;
   }
 
+  proc string_from_set(set): string {
+    var res = "{";
+    for item in set.sorted() do
+      res += item:string + ", ";
+    
+    res = res[1..res.length-2] + "}";
+    return res;
+  }
+
 
   proc main() {
     try! {
@@ -41,12 +50,12 @@ module SETO {
       var b = set_from_string(bline);
       var u : domain(uint) = 1..n;
 
-      writeln(a + b);
-      writeln(a & b);
-      writeln(a - b);
-      writeln(b - a);
-      writeln(u - a);
-      writeln(u - b);
+      writeln(string_from_set(a + b));
+      writeln(string_from_set(a & b));
+      writeln(string_from_set(a - b));
+      writeln(string_from_set(b - a));
+      writeln(string_from_set(u - a));
+      writeln(string_from_set(u - b));
     }
   }
 }
