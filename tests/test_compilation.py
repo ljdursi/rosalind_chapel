@@ -16,7 +16,7 @@ modules = ["CONS", "DNA", "FIB", "FIBD", "GC", "GRPH", "HAMM", "IPRB",
            "ASMQ", "MULT", "MREP", "SMGB", "GREP", "CNTQ", "KSIM",
            "EUBT"]
 
-modules_need_blas = ["IEV", "LIA", "WFMD", "FOUN", "MEND"]
+modules_need_blas = ["IEV", "LIA", "WFMD", "FOUN", "MEND", "ALPH"]
 
 
 def compile_idfn(module):

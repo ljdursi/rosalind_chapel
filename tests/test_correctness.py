@@ -10,13 +10,14 @@ modules = ["CONS", "FIBD", "HAMM", "LIA", "PROT", "DNA", "GC",
            "GRPH", "LCSM", "ORF", "PERM", 'PPER', 'PROB', 'REVP',
            'SIGN', 'SSEQ', 'TRAN', "REAR", "SORT", "RSTR", "LCSQ",
            "CAT", "MMCH", "CORR", "EDIT", "EVAL", "SPEC", "SCSP",
-           "TRIE", "MOTZ", "ASPC", "NWCK", "DBRU", "EDTA", "CONV",
-           "INDC", "RNAS", "NKEW", "ITWV", "LREP", "CTBL", "FULL",
-           "AFRQ", "CUNR", "QRT", "GLOB", "PCOV", "PRSM", "LOCA",
-           "SIMS", "CTEA", "SEXL", "CSTR", "SGRA", "ROOT", "SUFF",
-           "WFMD", "OAP", "PDPL", "FOUN", "MEND", "GCON", "EBIN",
-           "SPTD", "OSYM", "GAFF", "LAFF", "GASM", "ASMQ", "MULT",
-           "MREP", "SMGB", "GREP", "CNTQ", "KSIM", "EUBT"]
+           "TRIE", "MOTZ", "ASPC", "NWCK", "SETO", "DBRU", "EDTA",
+           "CONV", "INDC", "RNAS", "NKEW", "ITWV", "LREP", "CTBL",
+           "FULL", "AFRQ", "CUNR", "QRT", "GLOB", "PCOV", "PRSM",
+           "LOCA", "SIMS", "CTEA", "SEXL", "CSTR", "SGRA", "ROOT",
+           "SUFF", "WFMD", "OAP", "PDPL", "FOUN", "MEND", "GCON",
+           "EBIN", "SPTD", "OSYM", "GAFF", "LAFF", "GASM", "ASMQ",
+           "MULT", "MREP", "SMGB", "GREP", "CNTQ", "KSIM", "EUBT",
+           "ALPH"]
 
 
 def run_idfn(module):
