@@ -87,8 +87,9 @@ class Tree(object):
         penalty = 1 - numpy.eye(_NBASES, dtype=numpy.int)
         newmtx = numpy.zeros_like(mtx)
         for i in range(k):
-            row = mtx[i, :] 
-            choices = numpy.repeat(row, _NBASES).reshape((_NBASES, _NBASES)) + penalty
+            row = mtx[i, :]
+            choices = numpy.repeat(row, _NBASES).reshape((_NBASES, _NBASES))
+            choices += penalty
             newmtx[i, :] = numpy.amin(choices, axis=0)
         return newmtx
 
@@ -193,8 +194,8 @@ def main():
         score = phylogeny.calc_hamming()
 
         print(score)
-        for taxon, seq in tree_sequences.items():
-            if not taxon in given_sequences:
+        for taxon in sorted(tree_sequences.keys()):
+            if taxon not in given_sequences:
                 print(">"+taxon)
                 print(seq)
 

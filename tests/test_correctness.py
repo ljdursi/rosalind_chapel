@@ -38,10 +38,13 @@ def is_equal_abs(x, y, abs_error=0.001):
     return abs(x-y) <= abs_error
 
 
-def compare_lines(runoutput, goodoutput, anyorder=False):
+def compare_lines(runoutput, goodoutput, anyorder=False, firstline=False):
     if anyorder:
         runoutput, goodoutput = sorted(runoutput), sorted(goodoutput)
+    linenum = 1
     for goodline, outline in zip(goodoutput, runoutput):
+        if linenum > 1 and firstline:
+            break
         gooditems = goodline.split()
         outitems = outline.split()
         assert len(gooditems) == len(outitems)
@@ -77,12 +80,19 @@ def test_python_chapel_run(module):
     if os.path.isfile(anyorderfile):
         anyorder = True
 
+    # if 'test.firstline' exists, we're only testing the first line
+    # before comparing
+    firstline = False
+    firstlinefile = "problems/" + module + '/' + 'test.firstline'
+    if os.path.isfile(firstlinefile):
+        firstline = True
+
     # if a given solution exists, compare against it
     # otherwise, compare against each other
     if os.path.isfile(testout):
         with open(testout, 'r') as outfile:
             goodoutput = outfile.readlines()
-            compare_lines(pyoutput, goodoutput, anyorder)
-            compare_lines(chploutput, goodoutput, anyorder)
+            compare_lines(pyoutput, goodoutput, anyorder, firstline)
+            compare_lines(chploutput, goodoutput, anyorder, firstline)
     else:
-        compare_lines(pyoutput, chploutput, anyorder)
+        compare_lines(pyoutput, chploutput, anyorder, firstline)

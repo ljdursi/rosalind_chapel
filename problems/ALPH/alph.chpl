@@ -275,7 +275,7 @@ module ALPH {
       const score = phylogeny.calc_hamming();
 
       writeln(score);
-      for taxon in tree_sequences_aa.d do
+      for taxon in tree_sequences_aa.d.sorted() do
         if !given_sequences.domain.member(taxon) {
           writeln(">", taxon);
           writeln(tree_sequences_aa.map[taxon]);
