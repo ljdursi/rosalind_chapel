@@ -53,6 +53,7 @@ def compare_lines(runoutput, goodoutput, anyorder=False, firstline=False):
                 assert is_equal_abs(float(gooditem), float(outitem))
             else:
                 assert gooditem == outitem
+        linenum += 1
 
 
 @pytest.mark.parametrize("module", modules, ids=run_idfn)
