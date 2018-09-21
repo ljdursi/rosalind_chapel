@@ -103,7 +103,7 @@ module SPTD {
 
   class Tree {
     var name: string;
-    var children: [1..0] Tree;
+    var children: [1..0] unmanaged Tree;
     var namedprogeny: [1..0] string;
 
     proc init(tokens: [] Token) {
@@ -119,7 +119,7 @@ module SPTD {
       if (n > 1) {
         const sublists = partition_list(tokens[low+1..high-1]);
         for sublist in sublists {
-          const subtree = new Tree(sublist.arr);
+          const subtree = new unmanaged Tree(sublist.arr);
           this.children.push_back(subtree);
           if subtree.name != "" then
             this.namedprogeny.push_back(subtree.name);
@@ -162,6 +162,11 @@ module SPTD {
       }
       return splits_set;
     }
+
+    proc deinit() {
+      for child in children do
+        delete child;
+    }
   }
 
   
@@ -170,11 +175,13 @@ module SPTD {
       const lines = lines_from_file(infile, defaultfilename);
       const allnames = lines[1].split();
 
-      const phylogeny1 = new Tree(tokenize(lines[2]));
-      const phylogeny2 = new Tree(tokenize(lines[3]));
+      const phylogeny1 = new unmanaged Tree(tokenize(lines[2]));
+      const phylogeny2 = new unmanaged Tree(tokenize(lines[3]));
 
       const diff = phylogeny1.splits(allnames) ^ phylogeny2.splits(allnames);
       writeln(diff.size);
+      delete phylogeny1;
+      delete phylogeny2;
     }
   }
 }
