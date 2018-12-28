@@ -26,9 +26,9 @@ module SUFF {
     var len: int;
 
     proc splitAt(idx) {
-      var newnode = new unmanaged Node();
+      var newnode = new Node();
       const newlab = edgelabel(idx+1..);
-      var newedge = new unmanaged Edge(newnode, child, newlab, newlab.length);
+      var newedge = new Edge(newnode, child, newlab, newlab.length);
       newnode.add_out_edge(newedge);
 
       edgelabel = edgelabel(1..idx);
@@ -63,7 +63,7 @@ module SUFF {
       if sequence == "" || !edgekeys.member(start) then
           return (this, "", 0, sequence);
 
-      ref edge = edges[start];
+      var edge = edges[start];
       const n = ncommon(sequence, edge.edgelabel);
 
       if n == edge.len then
@@ -95,13 +95,13 @@ module SUFF {
         node = edge.splitAt(ncommon);
       }
 
-      var newedge = new unmanaged Edge(node, nil, sremain, sremain.length);
+      var newedge = new Edge(node, nil, sremain, sremain.length);
       node.add_out_edge(newedge);
       return;
     }
 
     proc init(sequence) {
-      root = new unmanaged Node();
+      root = new Node();
       this.complete();
       for i in 1..sequence.length do
         insert(sequence[i..]);
@@ -129,8 +129,9 @@ module SUFF {
   proc main() {
     try! {
       for sequence in lines_from_file(infile, defaultfilename) {
-        var suffixTree = new owned QuadraticSuffixTree(sequence);
+        var suffixTree = new QuadraticSuffixTree(sequence);
         suffixTree.printedges();
+        delete suffixTree;
       }
     }
   }
