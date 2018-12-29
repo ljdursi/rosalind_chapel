@@ -39,7 +39,7 @@ module LREP {
     var totallength: uint;
     var nendings: uint;
     var name: string;
-    var children: [1..0] Tree;
+    var children: [1..0] unmanaged Tree;
   
     iter these() : Tree {
       for child in children do
@@ -47,6 +47,12 @@ module LREP {
           yield e;
       yield this;
     }
+
+    proc deinit() {
+      for child in children do
+        delete child;
+    }
+
   }
   
   proc partition_list(all_lines: list(string), children: [?D] string) {
@@ -77,13 +83,13 @@ module LREP {
   
   proc buildTree(ref lines: list(string), fullstring: string,
                  name: string, start: uint = 0,
-                 length: uint = 0, totallength: uint = 0) : Tree throws {
+                 length: uint = 0, totallength: uint = 0) : unmanaged Tree throws {
     const l = fullstring.length;
     var children_names: [1..0] string;
     var children_starts: [1..0] uint;
     var children_lens: [1..0] uint;
   
-    var tree = new Tree(start, length, totallength, 0: uint, name);
+    var tree = new unmanaged Tree(start, length, totallength, 0: uint, name);
     tree.nendings = 0;
     if start + length >= l then
       tree.nendings = 1;
@@ -143,6 +149,7 @@ module LREP {
         }
       }
       writeln(totstring(maxstart..#maxlen));
+      delete suffixtree;
     }
   }
 }

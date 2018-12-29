@@ -33,7 +33,7 @@ module ASPC {
         num *= (n-i+1);
         den *= i;
     }
-    return (num / den) % modulus;
+    return ((num / den) % modulus):int;
   }
 
   proc main() {

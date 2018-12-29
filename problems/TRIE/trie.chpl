@@ -5,12 +5,17 @@ module TRIE {
   class Node {
     var num: int;
     var bases: domain(string);
-    var edges: [bases] Node;
+    var edges: [bases] unmanaged Node;
+
+    proc deinit() {
+      for base in bases do
+        delete edges[base];
+    }
   }
 
   class Trie {
     var nnodes : int = 1;
-    var root = new Node(1);
+    var root = new unmanaged Node(1);
 
     proc insert(sequence: string) {
       var node = root;
@@ -19,14 +24,14 @@ module TRIE {
           node = node.edges[base];
         else {
           nnodes += 1;
-          node.edges[base] = new Node(nnodes);
+          node.edges[base] = new unmanaged Node(nnodes);
           node = node.edges[base];
         }
       }
     }
 
     proc edgelist() {
-      proc dfs_edgelist(n: Node) {
+      proc dfs_edgelist(n: borrowed Node) {
         for base in n.bases {
           writeln(n.num, " ", n.edges[base].num, " ", base);
           dfs_edgelist(n.edges[base]);
@@ -51,7 +56,7 @@ module TRIE {
   }
 
   proc main() {
-    var trie = new Trie();
+    var trie = new unmanaged Trie();
     try! {
       for sequence in lines_from_file(infile, defaultfilename) do
         trie.insert(sequence);

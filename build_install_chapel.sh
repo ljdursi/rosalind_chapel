@@ -1,6 +1,6 @@
 #!/bin/bash
 cd || exit
-VERSION="1.17.1"
+VERSION="1.18.0"
 if [[ ! -f ~/chapel-${VERSION}/util/setchplenv.bash ]]
 then
     wget https://github.com/chapel-lang/chapel/releases/download/${VERSION}/chapel-${VERSION}.tar.gz
