@@ -136,7 +136,7 @@ module CTBL {
       if (n > 1) {
         const sublists = partition_list(tokens[low+1..high-1]);
         for sublist in sublists {
-          const subtree = new Tree(sublist.arr);
+          const subtree = new unmanaged Tree(sublist.arr);
           this.children.push_back(subtree);
           if subtree.name != "" then
             this.namedprogeny.push_back(subtree.name);
@@ -177,7 +177,7 @@ module CTBL {
     try! {
       for line in lines_from_file(infile, defaultfilename) {
         const tokens = tokenize(line);
-        const phylogeny = new Tree(tokens);
+        const phylogeny = new owned Tree(tokens);
         
         const allnames = sorted(phylogeny.namedprogeny);
         const n = allnames.size;

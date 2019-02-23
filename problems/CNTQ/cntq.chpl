@@ -122,7 +122,7 @@ module CNTQ {
       if (n > 1) {
         const sublists = partition_list(tokens[low+1..high-1]);
         for sublist in sublists {
-          const subtree = new Tree(sublist.arr);
+          const subtree = new unmanaged Tree(sublist.arr);
           this.children.push_back(subtree);
 
           for name in subtree.namedprogeny do
@@ -192,7 +192,7 @@ module CNTQ {
         lines.push_back(line);
 
       const tokens = tokenize(lines[2]);
-      const phylogeny = new Tree(tokens);
+      const phylogeny = new owned Tree(tokens);
 
       const nq = phylogeny.nquartets();
       writeln(nq);

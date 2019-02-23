@@ -57,9 +57,9 @@ module OSYM {
     // 3rd dimension of matrix = operation
     const n = seq1.length;
     const m = seq2.length;
-    var score : [0..n, 0..m, move.diag..move.best] int;
+    var score : [0..n, 0..m, move.diag:int..move.best:int] int;
 
-    for k in move.diag..move.best {
+    for k in move.diag:int..move.best:int {
       score[1..n, 0, k] = -n..-1 by -1;
       score[0, 1..m, k] = -m..-1 by -1;
     }
@@ -67,10 +67,10 @@ module OSYM {
     for i in 1..n {
       for j in 1..m {
         const bp_score = matchscore(seq1, i, seq2, j);
-        score[i, j, move.diag] = score[i-1, j-1, move.best] + bp_score;
-        score[i, j, move.ins] = score[i-1, j, move.best] - 1;
-        score[i, j, move.del] = score[i, j-1, move.best] - 1;
-        score[i, j, move.best] = max(score[i, j, move.diag], score[i, j, move.ins], score[i, j, move.del]);
+        score[i, j, move.diag:int] = score[i-1, j-1, move.best:int] + bp_score;
+        score[i, j, move.ins:int] = score[i-1, j, move.best:int] - 1;
+        score[i, j, move.del:int] = score[i, j-1, move.best:int] - 1;
+        score[i, j, move.best:int] = max(score[i, j, move.diag:int], score[i, j, move.ins:int], score[i, j, move.del:int]);
       }
     }
     return score;
@@ -99,9 +99,9 @@ module OSYM {
     var score : [1..n, 1..m] int;
     for i in 1..n do
       for j in 1..m {
-        score[i, j] = left[i, j, move.diag];
+        score[i, j] = left[i, j, move.diag:int];
         score[i, j] -= matchscore(seq1, i, seq2, j);
-        score[i, j] += right[n-i+1, m-j+1, move.diag];
+        score[i, j] += right[n-i+1, m-j+1, move.diag:int];
       }
 
     return score;

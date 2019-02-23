@@ -177,7 +177,7 @@ module ALPH {
       if (n > 1) {
         const sublists = partition_list(tokens[low+1..high-1]);
         for sublist in sublists {
-          var subtree = new Tree(sublist.arr, sequences, k);
+          var subtree = new unmanaged Tree(sublist.arr, sequences, k);
           this.children.push_back(subtree);
         }
       }
@@ -268,7 +268,7 @@ module ALPH {
         else
           assert(given_sequences[lab].length == k);
 
-      var phylogeny = new Tree(tokens, given_sequences, k);
+      var phylogeny = new owned Tree(tokens, given_sequences, k);
       phylogeny.set_sequences();
 
       const tree_sequences_aa = phylogeny.sequences();
@@ -280,8 +280,6 @@ module ALPH {
           writeln(">", taxon);
           writeln(tree_sequences_aa.map[taxon]);
         }
-        
-        delete phylogeny;
     }
   }
 }

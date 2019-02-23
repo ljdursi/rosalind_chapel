@@ -148,7 +148,7 @@ module MEND {
       if (n > 1) {
         const sublists = partition_list(tokens[low+1..high-1]);
         for sublist in sublists {
-          const subtree = new Tree(sublist.arr);
+          const subtree = new unmanaged Tree(sublist.arr);
           this.children.push_back(subtree);
         }
       }
@@ -171,11 +171,8 @@ module MEND {
     try! {
       for line in lines_from_file(infile, defaultfilename) {
         const tokens = tokenize(line);
-        const phylogeny = new Tree(tokens);
-        
+        const phylogeny = new owned Tree(tokens);
         writeln(phylogeny.gt_probs);
-
-        delete phylogeny;
       }
     }
   }

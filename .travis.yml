@@ -5,23 +5,30 @@ os:
 
 env:
   global:
-    - CHAPEL_HOME=~/chapel-1.17.1
+    - CHAPEL_HOME=~/chapel-1.18.0
     - CHPL_AUX_FILESYS=curl
 
 cache:
   directories:
-    - $HOME/chapel-1.17.1
+    - $HOME/chapel-1.18.0
+
+addons:
+  apt:
+    packages:
+    - gcc
+    - libopenblas-dev
+    - liblapack-dev
+    - liblapacke-dev
+    - wget
+    - perl
+    - time
 
 install:
-  - sudo apt-get update -qq
-  - sudo apt-get install -qq gcc libopenblas-dev liblapack-dev liblapacke-dev wget perl
-  - sudo apt-get install time
   - pip install pytest scipy
   - ./build_install_chapel.sh
   - mkdir -p ~/bin
   - wget -O ~/bin/cloc https://github.com/AlDanial/cloc/raw/master/cloc
   - chmod 755 ~/bin/cloc
-
 
 script:
   - source ${CHAPEL_HOME}/util/setchplenv.bash

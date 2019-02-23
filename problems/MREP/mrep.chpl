@@ -32,9 +32,9 @@ module MREP {
     var len: int;
 
     proc splitAt(idx) {
-      var newnode = new Node(parent.lab+edgelabel(1..idx), "");
+      var newnode = new unmanaged Node(parent.lab+edgelabel(1..idx), "");
       const newlab = edgelabel(idx+1..);
-      var newedge = new Edge(newnode, child, newlab, newlab.length);
+      var newedge = new unmanaged Edge(newnode, child, newlab, newlab.length);
       newnode.add_out_edge(newedge);
 
       edgelabel = edgelabel(1..idx);
@@ -76,7 +76,7 @@ module MREP {
       if sequence == "" || !edgekeys.member(start) then
           return (this, "", 0, sequence);
 
-      var edge = edges[start];
+      ref edge = edges[start];
       const n = ncommon(sequence, edge.edgelabel);
 
       if n == edge.len then
@@ -89,14 +89,17 @@ module MREP {
       for edge in edges do
         edge.child.set_left_chars();
 
-      const left_chars = [edge in edges] edge.child.left_char;
-      if left_chars.size > 0 {
-        left_char = left_chars[1];
-        for i in 2..left_chars.size do 
-          if left_chars[i] != left_char {
+      var started = false;
+      for edge in edges do {
+        if !started {
+          left_char = edge.child.left_char;
+          started = true;
+        } else {
+          if edge.child.left_char != left_char {
             left_char = "*";
             break;
           }
+        }
       }
     }
 
@@ -116,11 +119,11 @@ module MREP {
 
     proc maximal_repeats() : stringarray {
       var repeats : stringarray;
-      const children = [edge in edges] edge.child;
-      if children.size == 0 then
+      if edges.size == 0 then
         return repeats;
 
-      for child in children {
+      for edge in edges {
+        var child = edge.child;
         var child_repeats = child.maximal_repeats();
         for child_repeat in child_repeats.strs do
           repeats.strs.push_back(child_repeat);
@@ -146,14 +149,14 @@ module MREP {
         node = edge.splitAt(ncommon);
       }
 
-      var new_node = new Node(sequence, left);
-      var newedge = new Edge(node, new_node, sremain, sremain.length);
+      var new_node = new unmanaged Node(sequence, left);
+      var newedge = new unmanaged Edge(node, new_node, sremain, sremain.length);
       node.add_out_edge(newedge);
       return;
     }
 
     proc init(sequence) {
-      root = new Node("", "");
+      root = new unmanaged Node("", "");
       this.complete();
       var left = "";
       for i in 1..sequence.length {
@@ -193,14 +196,12 @@ module MREP {
   proc main() {
     try! {
       for sequence in lines_from_file(infile, defaultfilename) {
-        var suffixTree = new QuadraticSuffixTree(sequence+"$");
+        var suffixTree = new owned QuadraticSuffixTree(sequence+"$");
         const repeats = suffixTree.maximal_repeats();
 
         for rep in repeats.strs do
           if rep.length >= threshold then
             writeln(rep);
-
-        delete suffixTree;
       }
     }
   }
