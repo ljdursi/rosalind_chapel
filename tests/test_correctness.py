@@ -17,7 +17,7 @@ modules = ["CONS", "FIBD", "HAMM", "LIA", "PROT", "DNA", "GC",
            "SUFF", "WFMD", "OAP", "PDPL", "FOUN", "MEND", "GCON",
            "EBIN", "SPTD", "OSYM", "GAFF", "LAFF", "GASM", "ASMQ",
            "MULT", "MREP", "SMGB", "GREP", "CNTQ", "KSIM", "EUBT",
-           "ALPH", "MGAP", "CSET"]
+           "ALPH", "MGAP", "CHBP", "CSET"]
 
 
 def run_idfn(module):
@@ -38,11 +38,14 @@ def is_equal_abs(x, y, abs_error=0.001):
     return abs(x-y) <= abs_error
 
 
-def compare_lines(runoutput, goodoutput, anyorder=False, firstline=False):
+def compare_lines(runoutput, goodoutput, anyorder=False, skipheader=False,
+                  firstline=False):
     if anyorder:
         runoutput, goodoutput = sorted(runoutput), sorted(goodoutput)
     linenum = 1
     for goodline, outline in zip(goodoutput, runoutput):
+        if linenum == 1 and skipheader:
+            continue
         if linenum > 1 and firstline:
             break
         gooditems = goodline.split()
@@ -88,12 +91,18 @@ def test_python_chapel_run(module):
     if os.path.isfile(firstlinefile):
         firstline = True
 
+    # if 'test.skipheaer' exists, we skip first line
+    skipheader = False
+    skipheaderfile = "problems/" + module + '/' + 'test.skipheader'
+    if os.path.isfile(skipheaderfile):
+        skipheader = True
+
     # if a given solution exists, compare against it
     # otherwise, compare against each other
     if os.path.isfile(testout):
         with open(testout, 'r') as outfile:
             goodoutput = outfile.readlines()
-            compare_lines(pyoutput, goodoutput, anyorder, firstline)
-            compare_lines(chploutput, goodoutput, anyorder, firstline)
+            compare_lines(pyoutput, goodoutput, anyorder, firstline, skipheader)
+            compare_lines(chploutput, goodoutput, anyorder, firstline, skipheader)
     else:
-        compare_lines(pyoutput, chploutput, anyorder, firstline)
+        compare_lines(pyoutput, chploutput, anyorder, firstline, skipheader)
