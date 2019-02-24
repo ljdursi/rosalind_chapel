@@ -14,7 +14,7 @@ modules = ["CONS", "DNA", "FIB", "FIBD", "GC", "GRPH", "HAMM", "IPRB",
            "SEXL", "CSTR", "SGRA", "ROOT", "SUFF", "OAP", "PDPL",
            "GCON", "EBIN", "SPTD", "OSYM", "GAFF", "LAFF", "GASM",
            "ASMQ", "MULT", "MREP", "SMGB", "GREP", "CNTQ", "KSIM",
-           "EUBT", "MGAP"]
+           "EUBT", "MGAP", "CSET"]
 
 modules_need_blas = ["IEV", "LIA", "WFMD", "FOUN", "MEND", "ALPH"]
 
